@@ -4,7 +4,7 @@ Amazon review VOC (Voice of Customer) analysis skill for [Claude Code](https://c
 
 ## What it does
 
-Scrapes Amazon customer reviews using a real browser (bypassing anti-bot) and runs them through Claude for semantic VOC analysis. No keyword counting — actual language understanding.
+Scrapes Amazon customer reviews using a real browser (bypassing anti-bot) and runs them through your OpenClaw model for semantic VOC analysis. No keyword counting — actual language understanding.
 
 - **Sentiment breakdown** — positive / neutral / negative with percentages
 - **Top 5 pain points** — what buyers complain about, with real quotes
@@ -41,9 +41,13 @@ clawhub install voc-amazon-reviews
    ```
    Without Browserbase, the scraper falls back to local Chrome but may be blocked by Amazon's sign-in wall.
 
-3. **Anthropic API Key** — for Claude-powered analysis:
+3. **OpenClaw model** — the skill uses whatever model is currently configured in OpenClaw. No separate API key needed.
    ```bash
-   export ANTHROPIC_API_KEY="sk-ant-..."
+   # Check your current model
+   openclaw models status
+
+   # Switch to a different model anytime
+   openclaw models set
    ```
 
 ## Usage
@@ -128,8 +132,8 @@ bash skills/voc-amazon-reviews/voc.sh B08N5WRWNW --output report.md
       ↓
 ③ Paginated scraping — ratings, titles, bodies, dates
       ↓
-④ Claude semantic analysis
-   (not keyword counting — actual language understanding)
+④ OpenClaw model analysis — uses your configured model
+   (gpt-5.2, Claude, Gemini, etc. — whatever openclaw models status shows)
       ↓
 ⑤ Bilingual structured report (EN + ZH)
 ```
@@ -141,7 +145,7 @@ voc-amazon-reviews/
 ├── SKILL.md       # Skill definition (Claude reads this)
 ├── voc.sh         # Main entry point
 ├── scraper.sh     # Amazon review scraper (uses browse CLI)
-└── analyze.sh     # Claude analysis + report renderer
+└── analyze.sh     # OpenClaw model analysis + report renderer
 ```
 
 ## Why not use the Amazon API?
@@ -152,15 +156,14 @@ Amazon's Product Advertising API doesn't expose review text — only aggregate r
 
 | Component | Cost per run |
 |---|---|
-| Claude analysis (100 reviews) | ~$0.01–0.03 |
+| Model analysis (100 reviews) | depends on your OpenClaw model |
 | Browserbase remote session | ~$0.01 |
-| **Total per ASIN** | **~$0.02–0.05** |
 
-Running on local Chrome (no Browserbase) is free but may be blocked by Amazon.
+Analysis cost varies by model. Run `openclaw models status` to see what you're using. Running on local Chrome (no Browserbase) is free but may be blocked by Amazon.
 
 ## Security
 
-`ANTHROPIC_API_KEY` and `BROWSERBASE_API_KEY` are read from environment variables and never written to disk or printed to stdout. Be aware that AI agent session logs may capture tool call arguments — use shell-level `export`, not inline assignments.
+`BROWSERBASE_API_KEY` is read from environment variables and never written to disk or printed to stdout. Analysis runs through OpenClaw's configured model — no separate LLM API key required. Be aware that AI agent session logs may capture tool call arguments — use shell-level `export`, not inline assignments.
 
 **Amazon ToS:** This tool accesses publicly visible review pages the same way a browser does. Use responsibly — avoid high-frequency scraping of the same ASIN.
 
