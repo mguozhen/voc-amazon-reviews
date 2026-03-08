@@ -33,7 +33,7 @@
 
 每个 Agent 是一个 `.md` 文件，定义了角色、职责、思维框架。
 
-![GitHub repo](screenshots/github-repo.png)
+![GitHub repo](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/github-repo.png)
 
 这不是噱头。接下来的每个决策，都是通过"召唤"对应 Agent 来推进的。
 
@@ -55,7 +55,7 @@
 | MVP 范围 | 单 ASIN 分析（不做竞品对比）|
 | 报告语言 | 中英双语 |
 
-![ClawHub skill page](screenshots/clawhub.png)
+![ClawHub skill page](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/clawhub.png)
 
 ---
 
@@ -77,7 +77,7 @@ voc-amazon-reviews/
 
 分析用的是 **OpenClaw 当前配置的默认模型**（我这里是 `gpt-5.2`），不需要单独配 API Key。
 
-![VOC Report Output](screenshots/voc-report.png)
+![VOC Report Output](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/voc-report.png)
 
 ---
 
@@ -98,7 +98,7 @@ voc-amazon-reviews/
 
 **最终抓到 7 条评论，跑出了完整报告：**
 
-![VOC Report](screenshots/voc-report.png)
+![VOC Report](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/voc-report.png)
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
@@ -142,7 +142,7 @@ clawhub login
 clawhub publish ./voc-amazon-reviews --slug voc-amazon-reviews --version 1.0.0
 ```
 
-![ClawHub Published](screenshots/clawhub.png)
+![ClawHub Published](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/clawhub.png)
 
 发布完成后，任何人都可以一行命令安装：
 
@@ -164,7 +164,7 @@ clawhub install voc-amazon-reviews
 - 扩散期：跨境论坛 + 微信群 + KOL
 - 转化期：Case Study + 报告内 CTA + 限时折扣
 
-![Roadmap doc](screenshots/roadmap.png)
+![Roadmap doc](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/roadmap.png)
 
 ---
 
