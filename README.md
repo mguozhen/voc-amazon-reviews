@@ -222,3 +222,7 @@ No. This tool uses the Shulex VOC API, which is a licensed data provider. It doe
 ## License
 
 MIT
+
+## Download History
+
+[![Download History](https://skill-history.com/chart/mguozhen/voc-amazon-reviews.svg)](https://skill-history.com/mguozhen/voc-amazon-reviews)
