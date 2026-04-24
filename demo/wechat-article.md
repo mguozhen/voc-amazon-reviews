@@ -1,245 +1,238 @@
-# 你不需要"读"评论——你需要听见评论里的结构
+# You Don't Need to "Read" Reviews — You Need to Hear the Structure Within Them
 
-*VOC AI：5秒分析亚马逊竞品评论，免费起步*
-
----
-
-你有没有干过这种事。
-
-打开竞品链接，从第一条评论开始看，一条一条往下翻。看到差评就截图，看到好评就记个关键词。翻了 20 分钟，觉得"差不多了"，关掉页面，打开文档，凭印象写了三条优化建议。
-
-这个过程，几乎每个亚马逊卖家都做过。
-
-问题是：你觉得你在分析评论。
-
-实际上，你只是在**读**评论。
-
-读和分析之间的距离，比你想象的远得多。
+*VOC AI: Analyze Amazon competitor reviews in 5 seconds, free to start*
 
 ---
 
-## 人脑不擅长做的事
+Have you ever done this.
 
-评论分析的核心不是"看懂每一条"。
+You open a competitor's listing, start reading from the first review, and scroll down one by one. Screenshot the bad ones, note keywords from the good ones. Twenty minutes later, you close the tab, open a document, and write three optimization suggestions from memory.
 
-是找出**结构**。
+Almost every Amazon seller has done this.
 
-哪些痛点被反复提及？反复到什么程度？买家用什么词描述这个痛点？正面评价集中在哪几个维度？差评里有多少是产品问题，又有多少是预期管理的问题？
+The problem is: you think you're analyzing reviews.
 
-这些问题，人脑处理不了。
+What you're actually doing is **reading** them.
 
-不是因为你不够聪明。是因为人脑天然有三个 bug：
-
-**第一，近因效应。** 你刚看的那条差评，权重会被放大。哪怕它只是个例。
-
-**第二，确认偏误。** 你心里已经有个判断了——"这个产品电池不行"。然后你会不自觉地只注意提到电池的评论。
-
-**第三，疲劳衰减。** 第 5 条评论你逐字看，第 50 条你扫一眼标题就划走了。
-
-所以你看完 100 条评论写出来的"分析"，本质上是一个带有偏见的、样本量不足的、权重失真的主观印象。
-
-你做了 2 小时的工作。产出的东西，不一定比扔硬币强多少。
+The distance between reading and analyzing is much greater than you think.
 
 ---
 
-## 词频统计也不是答案
+## What the Human Brain Isn't Good At
 
-有人说，用工具嘛。Helium 10，Jungle Scout，都有评论分析功能。
+The core of review analysis isn't "understanding each one."
 
-打开看看就知道了。它们做的是词频统计。
+It's finding the **structure**.
 
-"battery"出现了 47 次，"quality"出现了 38 次，"price"出现了 29 次。
+Which pain points are mentioned repeatedly? How often? What words do buyers use to describe them? Which dimensions do positive reviews cluster around? How many negative reviews are product issues versus expectation management problems?
 
-然后呢？
+The human brain can't process these questions well.
 
-"battery"出现 47 次，是夸电池好，还是骂电池差？不知道。
+Not because you're not smart enough. It's because the human brain has three built-in bugs:
 
-"quality"出现 38 次，是"good quality"还是"poor quality"？不知道。
+**First: recency bias.** The last review you read gets its weight amplified. Even if it's an outlier.
 
-词频统计告诉你什么词出现得多。但不告诉你这些词背后的**情绪**、**场景**和**行动建议**。
+**Second: confirmation bias.** You already have a conclusion — "this product's battery is weak." Then you unconsciously notice only the reviews mentioning battery.
 
-这就像给你一张地图，上面只标了地名，没标路。你知道了目的地在哪，但不知道怎么走。
+**Third: fatigue decay.** You read the 5th review word by word; by the 50th, you're just skimming the headline.
 
----
+So the "analysis" you write after reading 100 reviews is, in essence, a biased, small-sample, weight-distorted subjective impression.
 
-## 5 秒钟发生了什么
-
-说回正题。我做了一个工具。输入一个 ASIN，5 秒出结果。
-
-不是词频。是语义分析。
-
-它做的事情是这样的：
-
-**第一步**，通过 Shulex VOC API 拉取真实评论数据。不是爬虫，是正规 API 接口。合法，稳定，快。
-
-**第二步**，AI 对每条评论做语义理解。不是数"battery"出现了几次，而是理解"这条评论在说电池续航不够用，评价者很失望"。
-
-**第三步**，输出一份结构化报告：情感分布、Top 5 痛点（带原话引用）、Top 5 卖点、Listing 优化建议。中英双语。
+You did 2 hours of work. The output might not be better than flipping a coin.
 
 ---
 
-## 实战演示
+## Keyword Counting Isn't the Answer Either
 
-我拿 Amazon Fire HD 8 Plus（ASIN: B099Z93WD9）跑了一次。8 条评论，5 秒钟。
+Some people say: just use tools. Helium 10, Jungle Scout — they both have review analysis features.
+
+Take a look and you'll see. They do keyword frequency.
+
+"battery" appeared 47 times, "quality" appeared 38 times, "price" appeared 29 times.
+
+So what?
+
+"battery" appeared 47 times — is that praise or complaints? Unknown.
+
+"quality" appeared 38 times — is it "good quality" or "poor quality"? Unknown.
+
+Keyword counting tells you which words appear most. But not the **sentiment**, **context**, or **actionable recommendations** behind those words.
+
+It's like getting a map that only has place names — no roads. You know where the destination is, but not how to get there.
+
+---
+
+## What Happens in 5 Seconds
+
+Back to the point. I built a tool. Input an ASIN, get results in 5 seconds.
+
+Not keyword frequency. Semantic analysis.
+
+Here's what it does:
+
+**Step 1:** Fetch real review data via the Shulex VOC API. Not a scraper — a legitimate API. Legal, stable, fast.
+
+**Step 2:** AI performs semantic understanding of each review. Not counting how many times "battery" appears, but understanding "this review says the battery life isn't sufficient, and the reviewer is disappointed."
+
+**Step 3:** Output a structured report: sentiment distribution, Top 5 pain points (with real quotes), Top 5 selling points, Listing optimization suggestions. In English.
+
+---
+
+## Live Demo
+
+I ran it on the Amazon Fire HD 8 Plus (ASIN: B099Z93WD9). 8 reviews, 5 seconds.
 
 ![VOC AI Demo](demo/voc-demo.gif)
 
-结果是这样的：
+Here are the results:
 
-### 情感分布
-
-```
-📊 情感分布
-  正面 Positive  ████████░░░░░░░░░░░░  37%
-  中性 Neutral   ██░░░░░░░░░░░░░░░░░░  13%
-  负面 Negative  ██████████░░░░░░░░░░  50%
-```
-
-50% 差评。如果你是竞品，这是机会。如果你是这个卖家，这是警报。
-
-但光知道"差评多"没用。关键是差评在说什么。
-
-### 痛点分析
+### Sentiment Distribution
 
 ```
-🔴 痛点 Top 4
+📊 Sentiment Distribution
+  Positive  ████████░░░░░░░░░░░░  37%
+  Neutral   ██░░░░░░░░░░░░░░░░░░  13%
+  Negative  ██████████░░░░░░░░░░  50%
+```
 
-1. 充电口故障 / Charging port moisture glitch（2条提及）
-   「充电口提示有水分，已知bug，一周都没恢复」
+50% negative reviews. If you're a competitor, this is an opportunity. If you're this seller, it's an alarm.
+
+But knowing "there are a lot of negatives" isn't useful by itself. What matters is what the negatives are saying.
+
+### Pain Point Analysis
+
+```
+🔴 Top 4 Pain Points
+
+1. Charging port moisture glitch (2 mentions)
    "Moisture in charging port — known glitch,
     a week in and still can't charge normally"
 
-2. 视频卡顿 / Video stalling（2条提及）
-   「看视频经常卡顿暂停，给小孩看的时候很烦」
+2. Video stalling (2 mentions)
    "Stalls out, pausing videos,
     really annoying when entertaining a toddler"
 
-3. 应用商店匮乏 / Limited app store（1条）
-   「Silk浏览器很烂，应用商店什么都没有」
+3. Limited app store (1 mention)
    "The Amazon Silk Browser is terrible,
     APP store offers nothing"
 
-4. 强制淘汰 / Forced obsolescence（1条）
-   「用了14年被通知不再支持，只给20%折扣」
+4. Forced obsolescence (1 mention)
    "After 14 years Amazon says no longer supported"
 ```
 
-注意这里的信息密度。
+Notice the information density here.
 
-痛点 1 不是"充电有问题"这种笼统描述。是"充电口报水分错误，已知 bug，一周没修好"。这个精度，你翻 20 分钟可能翻不出来——因为你可能正好跳过了这条。
+Pain point 1 isn't a vague "charging issue." It's "the charging port triggers a moisture error — a known bug — unfixed for a week." That level of precision might take 20 minutes of manual reading to find — because you might have skipped right over it.
 
-痛点 2 的场景非常具体：给小孩看视频，频繁卡顿。如果你卖的是儿童平板，这就是你的 Listing 要正面回应的点。
+Pain point 2 has a very specific context: videos stalling while a toddler is watching. If you're selling a kids' tablet, this is exactly the point your Listing needs to address directly.
 
-### 卖点分析
+### Selling Point Analysis
 
 ```
-🟢 卖点 Top 3
+🟢 Top 3 Selling Points
 
-1. 性价比高 / Great value for money（3条提及）
-   「价格实惠，功能齐全，看电影看书玩游戏都行」
+1. Great value for money (3 mentions)
    "Budget friendly, entertainment on the go"
 
-2. 便携尺寸 / Perfect portable size（2条提及）
-   「尺寸刚好，放包里轻松带上飞机看电影」
+2. Perfect portable size (2 mentions)
    "Perfect size, light and easy to fit in my purse"
 
-3. 阅读体验好 / Good for reading（2条）
-   「用来看书完全够用」
+3. Good for reading (2 mentions)
    "Fine for reading books"
 ```
 
-买家自己在替这个产品做定位：**便宜、便携、看书够用**。
+Buyers are positioning this product themselves: **cheap, portable, good enough for reading**.
 
-如果你是竞品卖家，这三个词应该出现在你的 Listing 标题里。不是因为你觉得它们重要，而是因为买家已经用钱投了票。
+If you're a competitor seller, those three ideas should appear in your Listing title. Not because you think they're important — because buyers have already voted with their wallets.
 
-### Listing 优化建议
+### Listing Optimization Suggestions
 
 ```
-💡 优化建议
+💡 Optimization Suggestions
 
-1. 标题突出"性价比"和"便携"——正面评论的核心词
-2. A+内容加充电口维护说明——降低 moisture glitch 差评率
-3. 引导用户侧载热门 App——缓解"商店什么都没有"的预期落差
+1. Highlight "budget-friendly" and "portable" in title — the core words in positive reviews
+2. Add charging port care instructions in A+ Content — reduce the moisture glitch complaint rate
+3. Guide users to sideload popular apps — address the "app store has nothing" expectation gap
 ```
 
-第 2 条尤其值得注意。充电口的"水分报错"是一个已知的软件 bug，但大量用户不知道这是 bug，以为是硬件坏了。如果在 A+ 内容里加一张"充电口维护说明"的图——差评率会直接下降。
+Tip 2 is especially worth noting. The charging port "moisture error" is a known software bug, but most users don't know it's a bug — they assume the hardware is broken. If you add a "charging port care guide" image in A+ Content, the negative review rate will drop directly.
 
-**这不是猜测。这是从评论结构里读出来的。**
+**This isn't guesswork. This is what's readable in the review structure.**
 
 ---
 
-## 10 个站点，一个命令
+## 10 Marketplaces, One Command
 
-支持亚马逊全球 10 个站点：US、CA、MX、GB、DE、FR、IT、ES、JP、AU。
+Supports all 10 global Amazon marketplaces: US, CA, MX, GB, DE, FR, IT, ES, JP, AU.
 
-换个参数就行：
+Just change one parameter:
 
 ```bash
-voc.sh B099Z93WD9 --market JP    # 分析日本站
-voc.sh B099Z93WD9 --market DE    # 分析德国站
+voc.sh B099Z93WD9 --market JP    # analyze Japan marketplace
+voc.sh B099Z93WD9 --market DE    # analyze Germany marketplace
 ```
 
-输出永远是中英双语。日本站的日文评论，也会被翻译成中英文分析。
+Output is always in English. Japanese reviews from the JP marketplace will be analyzed and delivered as English insights.
 
-做日本站但不懂日语？不重要。工具替你听。
+Selling on Japan but don't speak Japanese? Doesn't matter. The tool listens for you.
 
-做欧洲五站但只看得懂英文？不重要。结构化报告替你翻译的不是文字，是意图。
+Selling across five European marketplaces but only read English? Doesn't matter. The structured report translates not just words — it translates intent.
 
-**你终于可以"听见"你听不懂的语言里，客户在说什么了。**
+**You can finally "hear" what customers are saying in languages you don't understand.**
 
 ---
 
-## 免费开始，门槛是零
+## Free to Start, Zero Barrier
 
-你需要的东西：一台有 curl 和 python3 的电脑。macOS 和 Linux 自带。
+What you need: a computer with curl and python3. macOS and Linux have them pre-installed.
 
-不需要 Docker。不需要 npm install。不需要配数据库。
+No Docker. No npm install. No database setup.
 
-三步开始：
+Three steps to get started:
 
-**第一步** 👉 去 [apps.voc.ai/openapi](https://apps.voc.ai/openapi) 注册一个 API key。免费，30 秒。新账号送 starter credits。
+**Step 1** 👉 Register for an API key at [apps.voc.ai/openapi](https://apps.voc.ai/openapi). Free. 30 seconds. New accounts include starter credits.
 
-**第二步** 下载工具：
+**Step 2** Clone the tool:
 ```
 git clone https://github.com/mguozhen/voc-amazon-reviews
 ```
 
-**第三步** 运行：
+**Step 3** Run:
 ```
-export VOC_API_KEY=你的key
+export VOC_API_KEY=your-key
 bash voc.sh B099Z93WD9
 ```
 
-默认拉 8 条评论，消耗 5 个 credits。够你看清一个产品的基本面。
+Default: fetches 8 reviews, uses 5 credits. Enough to get a clear picture of any product.
 
-想要更深的分析？
+Want deeper analysis?
 
 ```
 bash voc.sh B099Z93WD9 --limit 100
 ```
 
-100 条评论，50 credits。够你写一份完整的竞品分析报告。
+100 reviews, 50 credits. Enough to write a complete competitor analysis report.
 
 ---
 
-## 最后
+## Finally
 
-跨境电商的竞争，早就过了"选对品就能赢"的阶段。
+Cross-border e-commerce competition has long passed the "just pick the right product to win" stage.
 
-今天的竞争在细节里。在你的 Listing 第一行用了"durable"还是"long-lasting"里。在你的 A+ 内容有没有正面回应那个反复出现的差评里。在你比对手早一周发现了某个痛点，然后在你的产品迭代里修掉了它。
+Today's competition lives in the details. In whether your Listing's first line uses "durable" or "long-lasting." In whether your A+ Content directly addresses that recurring complaint. In whether you spotted a pain point a week before your competitor did, and fixed it in your next product iteration.
 
-这些细节，藏在评论里。
+These details are hiding in the reviews.
 
-但评论不会自己跳出来告诉你。
+But reviews won't jump out and tell you.
 
-**不是读更多评论。是听见评论背后的信号。**
+**It's not about reading more reviews. It's about hearing the signal behind them.**
 
-5 秒，10 个站点，中英双语，免费开始。
+5 seconds, 10 marketplaces, free to start.
 
-👉 注册地址：[apps.voc.ai/openapi](https://apps.voc.ai/openapi)
+👉 Register: [apps.voc.ai/openapi](https://apps.voc.ai/openapi)
 
-👉 GitHub：[github.com/mguozhen/voc-amazon-reviews](https://github.com/mguozhen/voc-amazon-reviews)
+👉 GitHub: [github.com/mguozhen/voc-amazon-reviews](https://github.com/mguozhen/voc-amazon-reviews)
 
 ---
 
-*由 VOC AI Skill 驱动 | Powered by Shulex VOC API*
+*Powered by VOC AI Skill | Powered by Shulex VOC API*

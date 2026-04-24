@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Amazon 评论分析脚本 - 使用 OpenClaw 默认模型
+# Amazon review analysis script - using OpenClaw default model
 # Usage: analyze.sh <reviews_json_file> <ASIN> [--output file.md]
 
 set -euo pipefail
@@ -17,7 +17,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$REVIEWS_FILE" || ! -f "$REVIEWS_FILE" ]]; then
-  echo "❌ 需要提供评论数据文件" >&2
+  echo "❌ Reviews data file required" >&2
   echo "Usage: analyze.sh <reviews_json_file> <ASIN> [--output file.md]" >&2
   exit 1
 fi
@@ -30,28 +30,28 @@ fi
 VOC_MODEL=$(openclaw models status --plain 2>/dev/null || echo "unknown")
 echo "Analyzing reviews with model: $VOC_MODEL ..." >&2
 
-# 读取评论数据
+# Read review data
 REVIEWS_JSON=$(cat "$REVIEWS_FILE")
 TOTAL=$(echo "$REVIEWS_JSON" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
 TODAY=$(date +%Y-%m-%d)
 
-# 构建分析 Prompt
+# Build analysis prompt
 PROMPT=$(cat <<PROMPT
-你是一位专业的亚马逊电商分析师，请对以下评论数据进行深度 VOC（Voice of Customer）分析。
+You are a professional Amazon e-commerce analyst. Perform a deep VOC (Voice of Customer) analysis on the following review data.
 
-## 分析任务
+## Analysis Task
 
-评论数量：${TOTAL} 条
-ASIN：${ASIN}
+Review count: ${TOTAL}
+ASIN: ${ASIN}
 
-## 评论数据
+## Review Data
 \`\`\`json
 $(echo "$REVIEWS_JSON" | python3 -c "
 import sys, json
 reviews = json.load(sys.stdin)
-# 截取最多150条，避免超出token限制
+# Limit to 150 reviews to stay within token limit
 sample = reviews[:150]
-# 精简字段 (compatible with both scraper and API formats)
+# Normalize fields (compatible with both scraper and API formats)
 simplified = [{
     'rating': r.get('rating'),
     'title': r.get('title',''),
@@ -65,19 +65,19 @@ print(json.dumps(simplified, ensure_ascii=False))
 " 2>/dev/null || echo "$REVIEWS_JSON" | head -c 15000)
 \`\`\`
 
-## 输出格式要求
+## Output Format Requirements
 
-请严格按以下格式输出，中英文双语，不要添加额外说明：
+Output strictly in the following format, all in English, no additional text:
 
 ---
-SENTIMENT_POSITIVE: [正面评论数量占比，如 74]
-SENTIMENT_NEUTRAL: [中性评论数量占比，如 16]
-SENTIMENT_NEGATIVE: [负面评论数量占比，如 10]
+SENTIMENT_POSITIVE: [percentage of positive reviews, e.g. 74]
+SENTIMENT_NEUTRAL: [percentage of neutral reviews, e.g. 16]
+SENTIMENT_NEGATIVE: [percentage of negative reviews, e.g. 10]
 ---
-PAIN_POINT_1_ZH: [痛点1中文描述，15字以内]
+PAIN_POINT_1_ZH: [Pain point 1, under 15 words]
 PAIN_POINT_1_EN: [Pain point 1 in English, under 15 words]
-PAIN_POINT_1_COUNT: [提及次数]
-PAIN_POINT_1_QUOTE_ZH: [最典型的中文用户原话或翻译，30字以内]
+PAIN_POINT_1_COUNT: [mention count]
+PAIN_POINT_1_QUOTE_ZH: [Most representative user quote, under 30 words]
 PAIN_POINT_1_QUOTE_EN: [Most representative English user quote, under 30 words]
 PAIN_POINT_2_ZH: ...
 PAIN_POINT_2_EN: ...
@@ -100,10 +100,10 @@ PAIN_POINT_5_COUNT: ...
 PAIN_POINT_5_QUOTE_ZH: ...
 PAIN_POINT_5_QUOTE_EN: ...
 ---
-SELLING_POINT_1_ZH: [卖点1中文描述，15字以内]
+SELLING_POINT_1_ZH: [Selling point 1, under 15 words]
 SELLING_POINT_1_EN: [Selling point 1 in English, under 15 words]
-SELLING_POINT_1_COUNT: [提及次数]
-SELLING_POINT_1_QUOTE_ZH: [最典型的中文用户原话或翻译，30字以内]
+SELLING_POINT_1_COUNT: [mention count]
+SELLING_POINT_1_QUOTE_ZH: [Most representative user quote, under 30 words]
 SELLING_POINT_1_QUOTE_EN: [Most representative English user quote, under 30 words]
 SELLING_POINT_2_ZH: ...
 SELLING_POINT_2_EN: ...
@@ -126,19 +126,19 @@ SELLING_POINT_5_COUNT: ...
 SELLING_POINT_5_QUOTE_ZH: ...
 SELLING_POINT_5_QUOTE_EN: ...
 ---
-TIP_1_ZH: [Listing 优化建议1，中文，50字以内]
+TIP_1_ZH: [Listing optimization tip 1, under 50 words]
 TIP_1_EN: [Listing optimization tip 1, English, under 50 words]
 TIP_2_ZH: ...
 TIP_2_EN: ...
 TIP_3_ZH: ...
 TIP_3_EN: ...
 ---
-SUMMARY_ZH: [整体一句话总结，30字以内]
+SUMMARY_ZH: [One-sentence overall summary, under 30 words]
 SUMMARY_EN: [One-sentence overall summary in English, under 30 words]
 PROMPT
 )
 
-# 调用 OpenClaw 默认模型
+# Call OpenClaw default model
 SESSION_ID="voc-$(date +%s)"
 RESPONSE=$(openclaw agent --local --session-id "$SESSION_ID" -m "$PROMPT" --json 2>/dev/null)
 
@@ -153,11 +153,11 @@ else:
 " 2>/dev/null)
 
 if [[ -z "$ANALYSIS" ]] || echo "$ANALYSIS" | grep -q "^ERROR:"; then
-  echo "❌ OpenClaw 调用失败: $ANALYSIS" >&2
+  echo "❌ OpenClaw call failed: $ANALYSIS" >&2
   exit 1
 fi
 
-# 解析结构化输出，渲染为漂亮报告
+# Parse structured output and render report
 REPORT=$(python3 - <<PYEOF
 import re, sys
 
@@ -181,76 +181,66 @@ neg = get('SENTIMENT_NEGATIVE')
 
 report = f"""
 ╔══════════════════════════════════════════════════════════════╗
-║          VOC AI 分析报告 / VOC AI Analysis Report           ║
+║                 VOC AI Analysis Report                       ║
 ║  ASIN: $ASIN  |  analyzed: $TOTAL reviews                   ║
 ║  Market: amazon.com  |  Generated: $TODAY                   ║
 ╚══════════════════════════════════════════════════════════════╝
 
-📊 情感分布 / Sentiment Distribution
+📊 Sentiment Distribution
 ─────────────────────────────────────────
-  正面 Positive  {bar(pos)}  {pos}%
-  中性 Neutral   {bar(neu)}  {neu}%
-  负面 Negative  {bar(neg)}  {neg}%
+  Positive  {bar(pos)}  {pos}%
+  Neutral   {bar(neu)}  {neu}%
+  Negative  {bar(neg)}  {neg}%
 
-🔴 Top 5 痛点 / Pain Points
+🔴 Top 5 Pain Points
 ═══════════════════════════════════════════════════════════════
 """
 
 for i in range(1, 6):
-    zh = get(f'PAIN_POINT_{i}_ZH')
     en = get(f'PAIN_POINT_{i}_EN')
     cnt = get(f'PAIN_POINT_{i}_COUNT')
-    qzh = get(f'PAIN_POINT_{i}_QUOTE_ZH')
     qen = get(f'PAIN_POINT_{i}_QUOTE_EN')
-    if zh == '—':
+    if en == '—':
         break
-    report += f"""{i}. {zh} / {en}（{cnt} 条提及）
-   「{qzh}」
+    report += f"""{i}. {en} ({cnt} mentions)
    "{qen}"
 
 """
 
-report += """🟢 Top 5 卖点 / Selling Points
+report += """🟢 Top 5 Selling Points
 ═══════════════════════════════════════════════════════════════
 """
 
 for i in range(1, 6):
-    zh = get(f'SELLING_POINT_{i}_ZH')
     en = get(f'SELLING_POINT_{i}_EN')
     cnt = get(f'SELLING_POINT_{i}_COUNT')
-    qzh = get(f'SELLING_POINT_{i}_QUOTE_ZH')
     qen = get(f'SELLING_POINT_{i}_QUOTE_EN')
-    if zh == '—':
+    if en == '—':
         break
-    report += f"""{i}. {zh} / {en}（{cnt} 条提及）
-   「{qzh}」
+    report += f"""{i}. {en} ({cnt} mentions)
    "{qen}"
 
 """
 
-report += """💡 Listing 优化建议 / Optimization Suggestions
+report += """💡 Listing Optimization Suggestions
 ═══════════════════════════════════════════════════════════════
 """
 
 for i in range(1, 4):
-    zh = get(f'TIP_{i}_ZH')
     en = get(f'TIP_{i}_EN')
-    if zh == '—':
+    if en == '—':
         break
-    report += f"""{i}. {zh}
-   {en}
+    report += f"""{i}. {en}
 
 """
 
-summary_zh = get('SUMMARY_ZH')
 summary_en = get('SUMMARY_EN')
-report += f"""📌 总结 / Summary
+report += f"""📌 Summary
 ─────────────────────────────────────────
-  {summary_zh}
   {summary_en}
 
 ══════════════════════════════════════════════════════════════
-  由 VOC AI Skill 生成 | Generated by VOC AI Skill
+  Generated by VOC AI Skill
   https://github.com/mguozhen/voc-amazon-reviews
 ══════════════════════════════════════════════════════════════
 """
@@ -264,5 +254,5 @@ echo "$REPORT"
 if [[ -n "$OUTPUT_FILE" ]]; then
   echo "$REPORT" > "$OUTPUT_FILE"
   echo "" >&2
-  echo "💾 报告已保存到: $OUTPUT_FILE" >&2
+  echo "💾 Report saved to: $OUTPUT_FILE" >&2
 fi

@@ -42,7 +42,7 @@
 | **Pain Points** | Top 5 customer complaints with real quotes and mention counts |
 | **Selling Points** | Top 5 things buyers love with real quotes and mention counts |
 | **Listing Optimization** | Actionable copy suggestions backed by review data |
-| **Bilingual Output** | Every insight in both English and Chinese |
+| **English Output** | Every insight in clear English |
 | **10 Marketplaces** | US, CA, MX, GB, DE, FR, IT, ES, JP, AU |
 | **Zero Dependencies** | Only needs `curl` + `python3` (no browser, no npm) |
 | **Free to Start** | 8 reviews = 5 credits. New accounts include starter credits |
@@ -102,38 +102,34 @@ bash voc.sh B08N5WRWNW --limit 100 --output report.md
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║          VOC AI 分析报告 / VOC AI Analysis Report           ║
+║                 VOC AI Analysis Report                       ║
 ║  ASIN: B099Z93WD9  |  analyzed: 8 reviews                   ║
 ║  Market: US  |  Generated: 2026-04-19                        ║
 ╚══════════════════════════════════════════════════════════════╝
 
-📊 情感分布 / Sentiment Distribution
+📊 Sentiment Distribution
 ─────────────────────────────────────────
-  正面 Positive  ████████░░░░░░░░░░░░  37%
-  中性 Neutral   ██░░░░░░░░░░░░░░░░░░  13%
-  负面 Negative  ██████████░░░░░░░░░░  50%
+  Positive  ████████░░░░░░░░░░░░  37%
+  Neutral   ██░░░░░░░░░░░░░░░░░░  13%
+  Negative  ██████████░░░░░░░░░░  50%
 
-🔴 Top 5 痛点 / Pain Points
+🔴 Top 5 Pain Points
 ═══════════════════════════════════════════════════════════════
-1. 充电口故障 / Charging port moisture glitch（2 条提及）
-   「充电口提示有水分，已知bug，一周都没恢复」
+1. Charging port moisture glitch (2 mentions)
    "Moisture in charging port — known glitch, can't charge"
 
-2. 视频卡顿 / Video stalling and weak connection（2 条提及）
-   「看视频经常卡顿暂停，给小孩看的时候很烦」
+2. Video stalling and weak connection (2 mentions)
    "Stalls out, pausing videos, really annoying"
 
-🟢 Top 5 卖点 / Selling Points
+🟢 Top 5 Selling Points
 ═══════════════════════════════════════════════════════════════
-1. 性价比高 / Great value for money（3 条提及）
-   「价格实惠，功能齐全，看电影看书玩游戏都行」
+1. Great value for money (3 mentions)
    "Budget friendly, entertainment on the go"
 
-2. 便携尺寸 / Perfect portable size（2 条提及）
-   「尺寸刚好，放包里轻松带上飞机看电影」
+2. Perfect portable size (2 mentions)
    "Perfect size, light and easy to fit in my purse"
 
-💡 Listing 优化建议 / Optimization Suggestions
+💡 Listing Optimization Suggestions
 ═══════════════════════════════════════════════════════════════
 1. Highlight budget-friendly and portability in title
 2. Add charging port care instructions in A+ Content
@@ -154,8 +150,8 @@ bash voc.sh B08N5WRWNW --limit 100 --output report.md
                                                       │
                                                       ▼
                                             ┌─────────────────┐
-                                            │ Bilingual Report │
-                                            │   (EN + ZH)     │
+                                            │ English Report  │
+                                            │                 │
                                             └─────────────────┘
 ```
 

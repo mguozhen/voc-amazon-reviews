@@ -1,6 +1,6 @@
 ---
 name: voc-amazon-reviews
-description: "VOC AI — Amazon Review Intelligence. Input an ASIN, fetch real Amazon reviews via Shulex VOC API and run AI analysis. Outputs a structured bilingual report: sentiment breakdown, top pain points, key selling points, and Listing optimization suggestions. Triggers: voc, amazon review analysis, asin analysis, voice of customer, listing optimization, pain points, selling points, review insights, amazon fba, product research"
+description: "VOC AI — Amazon Review Intelligence. Input an ASIN, fetch real Amazon reviews via Shulex VOC API and run AI analysis. Outputs a structured English report: sentiment breakdown, top pain points, key selling points, and Listing optimization suggestions. Triggers: voc, amazon review analysis, asin analysis, voice of customer, listing optimization, pain points, selling points, review insights, amazon fba, product research"
 allowed-tools: Bash
 metadata:
   openclaw:
@@ -9,7 +9,7 @@ metadata:
 
 # VOC AI — Amazon Review Intelligence
 
-> Input an ASIN, fetch real Amazon reviews via Shulex VOC API, and get a structured bilingual insight report powered by AI.
+> Input an ASIN, fetch real Amazon reviews via Shulex VOC API, and get a structured English insight report powered by AI.
 
 ## Quick Setup (30 seconds)
 
@@ -94,7 +94,7 @@ bash ~/.agents/skills/voc-amazon-reviews/voc.sh B08N5WRWNW --limit 100 --output 
       ↓
 ④ AI deep semantic analysis (sentiment, pain points, selling points)
       ↓
-⑤ Bilingual report (Chinese + English)
+⑤ English report
 ```
 
 ## Cost Guide

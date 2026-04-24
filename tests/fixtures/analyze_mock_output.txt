@@ -2,39 +2,39 @@ SENTIMENT_POSITIVE: 37
 SENTIMENT_NEUTRAL: 13
 SENTIMENT_NEGATIVE: 50
 ---
-PAIN_POINT_1_ZH: 充电口故障
+PAIN_POINT_1_ZH: Charging port moisture glitch
 PAIN_POINT_1_EN: Charging port moisture glitch
 PAIN_POINT_1_COUNT: 2
-PAIN_POINT_1_QUOTE_ZH: 充电口提示有水分，已知bug
+PAIN_POINT_1_QUOTE_ZH: Moisture indicator triggered, known bug, still not fixed after a week
 PAIN_POINT_1_QUOTE_EN: Moisture in charging port, known glitch
-PAIN_POINT_2_ZH: 视频卡顿
+PAIN_POINT_2_ZH: Video stalling and buffering
 PAIN_POINT_2_EN: Video stalling and weak connection
 PAIN_POINT_2_COUNT: 2
-PAIN_POINT_2_QUOTE_ZH: 看视频经常卡顿暂停
+PAIN_POINT_2_QUOTE_ZH: Videos stall and pause constantly, very annoying
 PAIN_POINT_2_QUOTE_EN: It stalls out, pausing videos
-PAIN_POINT_3_ZH: 应用商店匮乏
+PAIN_POINT_3_ZH: Limited app store selection
 PAIN_POINT_3_EN: Limited app store selection
 PAIN_POINT_3_COUNT: 1
-PAIN_POINT_3_QUOTE_ZH: 应用商店什么都没有
+PAIN_POINT_3_QUOTE_ZH: App store has nothing worth downloading
 PAIN_POINT_3_QUOTE_EN: The APP store offers nothing
 ---
-SELLING_POINT_1_ZH: 性价比高
+SELLING_POINT_1_ZH: Great value for money
 SELLING_POINT_1_EN: Great value for money
 SELLING_POINT_1_COUNT: 3
-SELLING_POINT_1_QUOTE_ZH: 价格实惠功能齐全
+SELLING_POINT_1_QUOTE_ZH: Affordable price with full features, great for entertainment
 SELLING_POINT_1_QUOTE_EN: Budget friendly, entertainment on the go
-SELLING_POINT_2_ZH: 便携尺寸
+SELLING_POINT_2_ZH: Perfect portable size
 SELLING_POINT_2_EN: Perfect portable size
 SELLING_POINT_2_COUNT: 2
-SELLING_POINT_2_QUOTE_ZH: 尺寸刚好放包里很方便
+SELLING_POINT_2_QUOTE_ZH: Just the right size, fits easily in a bag
 SELLING_POINT_2_QUOTE_EN: Perfect size, light and easy to fit in my purse
 ---
-TIP_1_ZH: 标题突出性价比和便携性
+TIP_1_ZH: Highlight budget-friendly and portability in title
 TIP_1_EN: Highlight budget-friendly and portability in title
-TIP_2_ZH: A+内容加入充电维护说明
+TIP_2_ZH: Add charging port care instructions in A+ Content
 TIP_2_EN: Add charging port care instructions in A+ Content
-TIP_3_ZH: 引导用户侧载热门App
+TIP_3_ZH: Guide users to sideload popular apps
 TIP_3_EN: Guide users to sideload popular apps
 ---
-SUMMARY_ZH: 性价比突出但硬件和生态问题拉低评分
+SUMMARY_ZH: Great value but hardware bugs and ecosystem lock-in drag ratings down
 SUMMARY_EN: Great value but hardware bugs and ecosystem lock-in drag ratings down

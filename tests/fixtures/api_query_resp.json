@@ -1,6 +1,6 @@
 {
   "code": "0",
-  "message": "成功",
+  "message": "Success",
   "data": {
     "taskId": "task_mock_unit_test_001",
     "status": "SUCCESS",

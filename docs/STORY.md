@@ -1,102 +1,102 @@
-# 我用 AI Agent 30分钟造了一个亚马逊评论分析工具，并发布到了全球 Skill 市场
+# I Built an Amazon Review Analysis Tool in 30 Minutes with AI Agents, Then Published It to the Global Skill Marketplace
 
-> 从想法到上线，全程用 Claude Code + OpenClaw 完成，零人工编码
-
----
-
-## 背景：一个卖家的真实痛点
-
-做亚马逊的都知道，看评论是每天必做的事。
-但手动翻几百条评论，归纳痛点、找卖点、写 Listing 优化建议——
-
-**这件事又重要，又枯燥，又耗时。**
-
-市面上有 Helium 10、Jungle Scout，但它们：
-- 贵（$50–$250/月）
-- 做的是词频统计，不是真正的语义理解
-- 不在你的工作流里，要切换窗口
-
-我想要一个**直接在 AI Agent 里跑**的工具。输入 ASIN，30 秒出报告。
+> From idea to launch — built entirely with Claude Code + OpenClaw, zero manual coding
 
 ---
 
-## 第一步：组建 AI 团队
+## Background: A Real Pain Point for Sellers
 
-我没有直接写代码。我先让 Claude Code 帮我创建了 4 个"团队 Agent"：
+Anyone who sells on Amazon knows: reading reviews is something you do every single day.
+But manually sifting through hundreds of reviews to identify pain points, surface selling points, and write Listing optimization suggestions —
+
+**It's important. It's tedious. It's time-consuming.**
+
+Tools like Helium 10 and Jungle Scout exist, but they:
+- Are expensive ($50–$250/month)
+- Do keyword counting, not real semantic understanding
+- Live outside your workflow, forcing constant context-switching
+
+I wanted a tool that runs **directly inside an AI Agent**. Input an ASIN, get a report in 30 seconds.
+
+---
+
+## Step 1: Assemble the AI Team
+
+I didn't start by writing code. I had Claude Code create 4 "team Agents" first:
 
 ```
-产品总控  →  负责需求定义、功能优先级、产品路线图
-开发总控  →  负责技术选型、架构设计、代码实现
-运营总控  →  负责用户场景、增长策略、转化设计
-市场总控  →  负责定位、GTM、竞品分析
+Product Lead  →  requirements, feature priorities, product roadmap
+Dev Lead      →  tech stack, architecture, code implementation
+Growth Lead   →  user scenarios, growth strategy, conversion design
+Marketing Lead →  positioning, GTM, competitor analysis
 ```
 
-每个 Agent 是一个 `.md` 文件，定义了角色、职责、思维框架。
+Each Agent is a `.md` file defining its role, responsibilities, and thinking framework.
 
 ![GitHub repo](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/github-repo.png)
 
-这不是噱头。接下来的每个决策，都是通过"召唤"对应 Agent 来推进的。
+This wasn't just for show. Every subsequent decision was made by "summoning" the appropriate Agent.
 
 ---
 
-## 第二步：4个 Agent 开会，拍板关键决策
+## Step 2: 4 Agents in a Meeting — Making Key Decisions
 
-产品总控定义了 MVP 范围。
-开发总控评估了技术方案。
-运营总控补充了用户场景。
-市场总控给出了差异化定位。
+The Product Lead defined the MVP scope.
+The Dev Lead evaluated the technical approach.
+The Growth Lead added user scenarios.
+The Marketing Lead provided differentiated positioning.
 
-**4个决策被快速拍板：**
+**4 decisions were locked in quickly:**
 
-| 决策 | 结论 |
+| Decision | Outcome |
 |---|---|
-| 数据来源 | 自建爬虫（不用付费 API）|
-| 目标平台 | OpenClaw（面向 AI Agent 用户）|
-| MVP 范围 | 单 ASIN 分析（不做竞品对比）|
-| 报告语言 | 中英双语 |
+| Data source | Custom scraper (no paid API) |
+| Target platform | OpenClaw (AI Agent user base) |
+| MVP scope | Single ASIN analysis (no competitor comparison) |
+| Report language | English + Chinese bilingual |
 
 ![ClawHub skill page](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/clawhub.png)
 
 ---
 
-## 第三步：30分钟，Skill 从 0 到可运行
+## Step 3: 30 Minutes — Skill from Zero to Running
 
-整个 Skill 由 4 个文件组成：
+The entire Skill consists of 4 files:
 
 ```
 voc-amazon-reviews/
-├── SKILL.md      ← AI 读这个，知道怎么调用这个 skill
-├── voc.sh        ← 主入口，接收 ASIN 参数
-├── scraper.sh    ← 用 browse CLI 抓取亚马逊评论
-└── analyze.sh    ← 调用 OpenClaw 模型做 VOC 分析
+├── SKILL.md      ← AI reads this to know how to invoke the skill
+├── voc.sh        ← main entry point, takes ASIN argument
+├── scraper.sh    ← uses browse CLI to fetch Amazon reviews
+└── analyze.sh    ← calls OpenClaw model for VOC analysis
 ```
 
-**核心技术选择：**
+**Core technical choices:**
 
-爬虫用的是 `browse CLI`（OpenClaw 生态里的浏览器自动化工具），而不是 curl——因为亚马逊有反爬，真实浏览器才能拿到数据。
+The scraper used `browse CLI` (the browser automation tool in the OpenClaw ecosystem), not curl — because Amazon has anti-scraping measures, and only a real browser can get the data.
 
-分析用的是 **OpenClaw 当前配置的默认模型**（我这里是 `gpt-5.2`），不需要单独配 API Key。
+The analysis used the **default model configured in OpenClaw** (mine was `gpt-5.2`), so no separate API key needed.
 
 ![VOC Report Output](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/voc-report.png)
 
 ---
 
-## 第四步：真实测试 — ASIN B0F6VWT6SP
+## Step 4: Real Test — ASIN B0F6VWT6SP
 
-我用的是亚马逊上的 **Blink Video Doorbell + Outdoor 4 XR**（4.6星，324条评论）来测试。
+I used the **Blink Video Doorbell + Outdoor 4 XR** on Amazon (4.6 stars, 324 reviews) to test.
 
-**遇到的问题和解法：**
+**Problems encountered and solutions:**
 
-| 问题 | 解法 |
+| Problem | Solution |
 |---|---|
-| curl 直接被反爬拦截 | 改用 browse CLI 打开真实浏览器 |
-| 评论页需要登录 | 改抓商品页的 Top Reviews（无需登录）|
-| Claude API 余额不足 | 改成调用 OpenClaw 本地模型 |
-| Claude Code 不能嵌套调用 | 改用 `openclaw agent --local` |
+| curl blocked by anti-scraping | Switched to browse CLI for a real browser |
+| Review page requires login | Switched to scraping Top Reviews on product page (no login needed) |
+| Claude API credits depleted | Switched to calling OpenClaw local model |
+| Claude Code can't nest calls | Used `openclaw agent --local` instead |
 
-每个问题遇到 → AI 给方案 → 立刻改 → 继续跑。
+Each problem encountered → AI provides solution → fix immediately → continue running.
 
-**最终抓到 7 条评论，跑出了完整报告：**
+**Result: 7 reviews captured, full report generated:**
 
 ![VOC Report](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/voc-report.png)
 
@@ -111,31 +111,31 @@ voc-amazon-reviews/
   Negative  ███░░░░░░░░░░░░░░░░░  14%
 
 🔴 Top Pain Points
-1. Live view extremely laggy（核心差评原因）
+1. Live view extremely laggy (core complaint)
 2. Motion detection unreliable
 3. Battery life unproven
 
 🟢 Top Selling Points
-1. Incredibly easy to install（6/7条均提及）
+1. Incredibly easy to install (6/7 reviews mention this)
 2. No subscription + local SD storage
 3. XR extended range up to 400ft
 
 💡 Listing Optimization
-1. 在标题加电池容量，管理续航预期
-2. 第一条 bullet 突出"无订阅费"，对标 Ring/Nest
-3. 用"up to 400ft"量化 XR 优势，加农场/大院场景图
+1. Add battery capacity to title to manage range expectations
+2. Lead first bullet with "no subscription fee" — differentiate from Ring/Nest
+3. Quantify the XR advantage with "up to 400ft" and add farm/large yard scenario images
 ```
 
 ---
 
-## 第五步：发布到全球 Skill 市场
+## Step 5: Publish to the Global Skill Marketplace
 
-**GitHub：**
+**GitHub:**
 ```bash
 git init && git push origin main
 ```
 
-**ClawHub（AI Agent 的 App Store）：**
+**ClawHub (the App Store for AI Agents):**
 ```bash
 npm install -g clawhub
 clawhub login
@@ -144,7 +144,7 @@ clawhub publish ./voc-amazon-reviews --slug voc-amazon-reviews --version 1.0.0
 
 ![ClawHub Published](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/clawhub.png)
 
-发布完成后，任何人都可以一行命令安装：
+Once published, anyone can install it with one command:
 
 ```bash
 clawhub install voc-amazon-reviews
@@ -152,68 +152,68 @@ clawhub install voc-amazon-reviews
 
 ---
 
-## 第六步：产品文档一步到位
+## Step 6: Product Documentation in One Pass
 
-产品总控输出了 **Roadmap**：
-- Phase 1：8条免费评论 → 引导至官网付费解锁全量
-- Phase 2：转化优化（ASIN 带参跳转、UTM 追踪）
-- Phase 3：付费用户直连 API，多 ASIN 批量分析
+The Product Lead produced the **Roadmap**:
+- Phase 1: 8 free reviews → guide to the website to unlock full analysis with a paid plan
+- Phase 2: Conversion optimization (ASIN pre-fill redirect, UTM tracking)
+- Phase 3: Paid users connect API directly, batch multi-ASIN analysis
 
-市场总控输出了 **GTM 策略**：
-- 种子期：ClawHub + GitHub + Reddit
-- 扩散期：跨境论坛 + 微信群 + KOL
-- 转化期：Case Study + 报告内 CTA + 限时折扣
+The Marketing Lead produced the **GTM strategy**:
+- Seed phase: ClawHub + GitHub + Reddit
+- Amplification phase: cross-border forums + WeChat groups + KOLs
+- Conversion phase: case studies + in-report CTA + limited-time offers
 
 ![Roadmap doc](https://raw.githubusercontent.com/mguozhen/voc-amazon-reviews/main/docs/screenshots/roadmap.png)
 
 ---
 
-## 整个过程的时间线
+## Full Timeline
 
 ```
-00:00  提出想法：为亚马逊卖家做 VOC 分析 Skill
-05:00  4个团队 Agent 创建完毕
-15:00  4个关键决策拍板
-30:00  SKILL.md + voc.sh + scraper.sh + analyze.sh 写完
-45:00  真实 ASIN 测试，踩坑+修复
-60:00  报告跑通，输出质量符合预期
-70:00  推送 GitHub，发布 ClawHub
-80:00  Roadmap + GTM 文档落地
+00:00  Idea: build a VOC analysis Skill for Amazon sellers
+05:00  4 team Agents created
+15:00  4 key decisions made
+30:00  SKILL.md + voc.sh + scraper.sh + analyze.sh complete
+45:00  Real ASIN testing, hit issues, made fixes
+60:00  Report running cleanly, output quality meets expectations
+70:00  Pushed to GitHub, published to ClawHub
+80:00  Roadmap + GTM docs finalized
 ```
 
-**全程：约 80 分钟。零人工编码。**
+**Total: ~80 minutes. Zero manual coding.**
 
 ---
 
-## 我学到的
+## What I Learned
 
-**1. 先组团队，再干活**
-4个 Agent 的设定看起来是"过度设计"，但它让每个决策都有明确的视角。产品想的和开发想的不一样——让 AI 扮演不同角色，就是在模拟这种张力。
+**1. Form the team first, then do the work**
+The 4-Agent setup looks like "over-engineering," but it forces every decision to have a clear perspective. What Product wants and what Dev wants are different — having AI play different roles simulates that tension.
 
-**2. 遇到墙就绕，不要硬撞**
-亚马逊反爬 → 换浏览器。API 余额不足 → 换模型。Claude 嵌套限制 → 用 openclaw agent。每次遇到障碍，AI 都能给出备选方案。
+**2. Hit a wall? Go around it, don't force through**
+Amazon anti-scraping → switch to real browser. API credits depleted → switch models. Claude nesting limit → use openclaw agent. Every time you hit a blocker, AI can offer alternatives.
 
-**3. 文档和代码同等重要**
-Roadmap、GTM、README，这些文档让工具"活"起来。没有它们，代码只是代码。
+**3. Documentation matters as much as code**
+Roadmap, GTM, README — these documents make the tool *alive*. Without them, code is just code.
 
 ---
 
-## 现在就可以用
+## Try It Now
 
 ```bash
-# 安装
+# Install
 clawhub install voc-amazon-reviews
 
-# 使用
+# Use
 bash skills/voc-amazon-reviews/voc.sh B0F6VWT6SP
 ```
 
-或者直接在 OpenClaw 里说：
+Or just say in OpenClaw:
 > "Analyze the reviews for ASIN B0F6VWT6SP"
 
-GitHub：https://github.com/mguozhen/voc-amazon-reviews
-ClawHub：clawhub install voc-amazon-reviews
+GitHub: https://github.com/mguozhen/voc-amazon-reviews
+ClawHub: clawhub install voc-amazon-reviews
 
 ---
 
-*用 Claude Code + OpenClaw 构建 | Build with AI, ship with AI*
+*Built with Claude Code + OpenClaw | Build with AI, ship with AI*

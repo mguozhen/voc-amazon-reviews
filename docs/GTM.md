@@ -3,8 +3,6 @@
 ## Positioning
 
 > **"5 seconds to analyze any Amazon product's reviews — real API data, 10 marketplaces, free to start."**
->
-> 中文版：**"5秒分析亚马逊竞品评论，真实API数据，10个站点，免费起步"**
 
 ---
 
@@ -16,7 +14,7 @@ Skill install → try 8 free reviews (5 credits)
     → buy credits → power user (100+ reviews)
 ```
 
-**Primary KPI: VOC API 新注册数 (apps.voc.ai/openapi)**
+**Primary KPI: VOC API new registrations (apps.voc.ai/openapi)**
 
 ---
 
@@ -25,7 +23,7 @@ Skill install → try 8 free reviews (5 credits)
 | Layer | Audience | Channel |
 |---|---|---|
 | **Layer 1** Seed | Tech-savvy sellers using Claude Code / OpenClaw | ClawHub, GitHub, Reddit, Twitter/X |
-| **Layer 2** Core | Chinese cross-border sellers | 知乎, 小红书, 微信群, 卖家之家 |
+| **Layer 2** Core | Chinese cross-border sellers | Zhihu, Xiaohongshu, WeChat groups, SellerHome |
 | **Layer 3** Expansion | Mainstream sellers via KOL / word-of-mouth | YouTube, TikTok, Facebook groups |
 
 ---
@@ -53,10 +51,10 @@ Skill install → try 8 free reviews (5 credits)
 ### Day 5: Reddit r/AmazonSeller
 
 ### Day 6: Zhihu Article
-- Title: 跨境电商必备：5秒分析亚马逊竞品评论，找到Listing优化突破口
+- Title: Cross-border e-commerce essential: analyze Amazon competitor reviews in 5 seconds and find your Listing optimization edge
 
 ### Day 7: Xiaohongshu Note
-- 6-9 image carousel + tags: #亚马逊 #跨境电商 #FBA #竞品分析
+- 6-9 image carousel + tags: #Amazon #CrossBorderEcommerce #FBA #CompetitorAnalysis
 
 ---
 
@@ -67,7 +65,7 @@ Skill install → try 8 free reviews (5 credits)
 - Zhihu: Publish STORY.md as second article
 - Reddit: r/SideProject (developer angle)
 - Facebook: remaining groups + follow-up in high-engagement ones
-- WeChat: share Zhihu link + "发 ASIN 帮你跑"
+- WeChat: share Zhihu link + "Send me an ASIN and I'll run it for you"
 
 ---
 
@@ -76,7 +74,7 @@ Skill install → try 8 free reviews (5 credits)
 | Budget Item | Amount |
 |---|---|
 | English KOL (Twitter/YouTube, 5k-30k followers) | $75 |
-| Chinese KOL (小红书/知乎) | $75 |
+| Chinese KOL (Xiaohongshu/Zhihu) | $75 |
 | Twitter promoted tweet (boost best thread) | $30 |
 | Demo API credits (for comment requests) | $20 |
 | **Total** | **$200** |
@@ -86,8 +84,8 @@ Skill install → try 8 free reviews (5 credits)
 
 Additional content:
 - Twitter "weekly analysis" thread (pick trending category, analyze 3 competitors)
-- Zhihu: answer 3-5 existing questions about 亚马逊评论分析
-- Xiaohongshu: niche deep-dive note (e.g., "AI分析10款蓝牙耳机的差评")
+- Zhihu: answer 3-5 existing questions about Amazon review analysis
+- Xiaohongshu: niche deep-dive note (e.g., "AI analysis of negative reviews for 10 Bluetooth headphones")
 
 ---
 

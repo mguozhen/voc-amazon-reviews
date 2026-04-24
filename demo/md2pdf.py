@@ -77,10 +77,10 @@ def md_to_html(text):
 body = md_to_html(md)
 
 html = f"""<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>VOC AI — 5秒分析亚马逊竞品评论</title>
+<title>VOC AI — Analyze Amazon Competitor Reviews in 5 Seconds</title>
 <style>
 @page {{
     size: A4;
