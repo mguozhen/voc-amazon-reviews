@@ -4,6 +4,8 @@
 >
 > 我们做了行业最稳定、最全的 Amazon 评论数据层 —— 然后顺手接到了 Claude。
 
+![The data is the moat — voc-amazon-reviews 架构图](assets/hero-data-moat.jpg)
+
 ---
 
 ## 一句话

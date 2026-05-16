@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>voc-amazon-reviews — data is the moat</title>
+<style>
+  :root {
+    --bg: #0c0a09;
+    --ink: #f5f0e8;
+    --muted: #999187;
+    --line: #2a2521;
+    --accent: #ff6a00;
+    --accent-2: #ffb37a;
+    --good: #67d97c;
+    --bad: #b94646;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: 'Geist', system-ui, -apple-system, sans-serif; }
+  body { width: 1600px; height: 900px; padding: 60px 80px; position: relative; overflow: hidden; }
+
+  /* subtle film grain */
+  body::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 1; mix-blend-mode: screen;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta .dot { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; vertical-align: 1px; margin-right: 12px; }
+
+  h1 {
+    font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    font-weight: 600; font-size: 96px; line-height: 0.96; letter-spacing: -0.025em;
+    margin: 28px 0 18px; max-width: 1280px;
+  }
+  h1 em { font-style: italic; color: var(--accent-2); font-weight: 500; }
+  .sub {
+    font-size: 26px; color: var(--muted); max-width: 980px; line-height: 1.4;
+    margin-bottom: 56px;
+  }
+
+  /* stack diagram */
+  .stack { display: flex; flex-direction: column; gap: 14px; max-width: 1280px; }
+  .row {
+    border: 1px solid var(--line);
+    padding: 26px 32px;
+    border-radius: 4px;
+    display: grid; grid-template-columns: 280px 1fr 200px; align-items: center; gap: 24px;
+    background: rgba(255,255,255,0.015);
+  }
+  .row.moat { border-color: var(--accent); background: rgba(255,106,0,0.08); }
+  .lbl { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .row.moat .lbl { color: var(--accent); }
+  .row .lbl strong { display: block; color: var(--ink); font-size: 22px; letter-spacing: -0.02em; text-transform: none; font-family: 'Fraunces', serif; font-weight: 500; margin-top: 4px; }
+  .desc { font-size: 16px; color: var(--ink); line-height: 1.45; }
+  .desc code { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent-2); background: rgba(255,179,122,0.08); padding: 1px 6px; border-radius: 3px; }
+  .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); text-align: right;
+  }
+  .row.moat .badge { color: var(--accent); }
+
+  footer {
+    position: absolute; bottom: 36px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  footer .repo { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="meta"><span class="dot"></span>voc-amazon-reviews · 2026-05</div>
+<h1>The data is the <em>moat</em>.</h1>
+<p class="sub">The most stable, most complete Amazon review data — wired into any AI tool via MCP. <br>Built on a paid OpenAPI, not a scraper.</p>
+
+<div class="stack">
+  <div class="row">
+    <div class="lbl">AI clients<br><strong>Claude / Cursor / Windsurf</strong></div>
+    <div class="desc">Any MCP-compatible client. Stdio transport, no port exposed.</div>
+    <div class="badge">delivery</div>
+  </div>
+  <div class="row">
+    <div class="lbl">MCP layer<br><strong>4 tools, thin wrapper</strong></div>
+    <div class="desc"><code>fetch_reviews</code> · <code>analyze_reviews</code> · <code>voc_full</code> · <code>extract_listing_improvements</code></div>
+    <div class="badge">analysis</div>
+  </div>
+  <div class="row moat">
+    <div class="lbl">Data layer ★<br><strong>Shulex VOC OpenAPI</strong></div>
+    <div class="desc">10 marketplaces · up to 1,000 reviews per ASIN · live, not cached · full schema (verified, helpful, vine, variant) · non-English markets native · zero DOM dependencies.</div>
+    <div class="badge">the moat</div>
+  </div>
+</div>
+
+<footer>
+  <div>github.com/mguozhen/<span class="repo">voc-amazon-reviews</span></div>
+  <div>open source · BYO API key</div>
+</footer>
+
+</body>
+</html>
