@@ -5,13 +5,18 @@
 <h1 align="center">VOC Amazon Reviews</h1>
 
 <p align="center">
-  <strong>Analyze any Amazon product's reviews in 5 seconds — real API data, AI-powered insights, 10 marketplaces.</strong>
+  <strong>The most stable, most complete Amazon review data — wired into any AI tool via MCP.</strong>
+</p>
+
+<p align="center">
+  <em>API-grade. 10 marketplaces. Up to 1,000 reviews per ASIN. No scraper fragility. Open source.</em>
 </p>
 
 <p align="center">
   <a href="#quick-start"><img src="https://img.shields.io/badge/setup-30sec-brightgreen?style=flat-square" alt="30s Setup"></a>
   <a href="https://openclaw.ai"><img src="https://img.shields.io/badge/OpenClaw-compatible-blue?style=flat-square" alt="OpenClaw"></a>
   <a href="https://claude.ai/code"><img src="https://img.shields.io/badge/Claude%20Code-skill-8A2BE2?style=flat-square" alt="Claude Code"></a>
+  <a href="mcp_server/"><img src="https://img.shields.io/badge/MCP-server-FF6A00?style=flat-square" alt="MCP Server"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/markets-10%20Amazon%20regions-FF9900?style=flat-square&logo=amazon&logoColor=white" alt="10 Marketplaces">
 </p>
@@ -19,10 +24,51 @@
 <p align="center">
   <a href="#quick-start">Quick Start</a> &bull;
   <a href="#demo">Demo</a> &bull;
+  <a href="#mcp-server-new">MCP Server</a> &bull;
   <a href="#usage">Usage</a> &bull;
   <a href="#how-it-works">How It Works</a> &bull;
   <a href="docs/ROADMAP.md">Roadmap</a>
 </p>
+
+---
+
+## Why this exists — the data is the moat
+
+Most Amazon seller tools have a dirty secret: **the data is the problem**, not the AI. Scrapers break the day Amazon ships a CSS change. "Free" tools cap you at 10 reviews. Paid SaaS dashboards lock the raw data behind a UI you can't query from your own scripts. Multi-market support is afterthought. Updates are daily snapshots, not live.
+
+We built this project around the opposite premise: **the review data layer should be boring, reliable, complete, and AI-native**. Everything else — sentiment analysis, pain-point extraction, listing copy generation, the MCP server — is downstream of that.
+
+| | Typical seller-tool data layer | This project |
+|---|---|---|
+| **Source** | Web scraper or undocumented scraping API | Paid OpenAPI ([Shulex VOC](https://apps.voc.ai/openapi)) |
+| **Reliability** | Breaks when Amazon changes HTML | API-grade, no DOM dependencies |
+| **Markets** | Usually US-only | **10**: US, CA, MX, GB, DE, FR, IT, ES, JP, AU |
+| **Volume** | 10–50 reviews per ASIN (free tier cap) | Up to **1,000 per ASIN** per call |
+| **Freshness** | Daily snapshots, sometimes cached for days | Live pull |
+| **Schema** | Strings only — verified/helpful/variant often dropped | Full schema: verified-purchase, helpful votes, vine voice, variant, dates |
+| **Non-English markets** | Often broken or omitted | Native — JP/DE/FR/IT/ES reviews captured verbatim, then AI-translated for analysis |
+| **Access pattern** | Locked behind their UI | curl + JSON, fully scriptable, MCP-ready |
+
+You can build any analysis layer on top. The data underneath won't be the bottleneck.
+
+---
+
+## 🆕 MCP Server — feed this data layer directly to Claude / Cursor / Windsurf
+
+```
+                Claude / Cursor / Windsurf
+                          │
+                          │   MCP (stdio)
+                          ▼
+                    mcp_server/  ←  4 tools, all powered by the data layer above
+                          │
+                          ├──  fetch_reviews                  ← the data, raw
+                          ├──  analyze_reviews                ← data → insights
+                          ├──  voc_full                       ← one-shot
+                          └──  extract_listing_improvements   ← data → copyable listing edits
+```
+
+Self-hosted, BYO API key, open source. See [`mcp_server/`](mcp_server/) for the install + Claude Desktop / Code config snippets.
 
 ---
 
@@ -36,6 +82,19 @@
 
 ## Features
 
+**Data layer (the foundation):**
+
+| Feature | Description |
+|---------|-------------|
+| **API-grade reliability** | Shulex VOC OpenAPI — no scrapers, no CAPTCHAs, no IP bans |
+| **10 marketplaces** | US, CA, MX, GB, DE, FR, IT, ES, JP, AU — full coverage |
+| **Up to 1,000 reviews / ASIN** | Configurable per call; most tools cap at 10–50 |
+| **Full review schema** | Rating, body, verified-purchase, helpful votes, vine voice, variant, dates |
+| **Live, not cached** | Every call hits the live API — no stale daily snapshots |
+| **Zero browser deps** | `curl` + `python3` only. No Selenium, no proxy farm, no Docker |
+
+**Analysis layer (built on top):**
+
 | Feature | Description |
 |---------|-------------|
 | **Sentiment Analysis** | Positive / neutral / negative breakdown with percentages |
@@ -43,8 +102,7 @@
 | **Selling Points** | Top 5 things buyers love with real quotes and mention counts |
 | **Listing Optimization** | Actionable copy suggestions backed by review data |
 | **Bilingual Output** | Every insight in both English and Chinese |
-| **10 Marketplaces** | US, CA, MX, GB, DE, FR, IT, ES, JP, AU |
-| **Zero Dependencies** | Only needs `curl` + `python3` (no browser, no npm) |
+| **AI-native via MCP** | Plug into Claude Desktop / Code / Cursor / Windsurf in one config block |
 | **Free to Start** | 8 reviews = 5 credits. New accounts include starter credits |
 
 ## Quick Start

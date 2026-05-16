@@ -1,0 +1,46 @@
+{
+  "reviews": [
+    {
+      "rating": 5,
+      "title": "Battery life is incredible",
+      "body": "Got 9 hours out of this on a single charge. Build feels solid too.",
+      "date": "2026-03-12",
+      "verified": true,
+      "variant": "Black",
+      "author": "Alex P.",
+      "helpful": 14,
+      "reviewId": "R1A2B3C4D5",
+      "vineVoice": false
+    },
+    {
+      "rating": 2,
+      "title": "Charging port broke after 3 weeks",
+      "body": "Worked great until the USB-C port got loose. Now it only charges if I hold the cable at an angle.",
+      "date": "2026-03-04",
+      "verified": true,
+      "variant": "Black",
+      "author": "Sam K.",
+      "helpful": 22,
+      "reviewId": "R6E7F8G9H0",
+      "vineVoice": false
+    },
+    {
+      "rating": 4,
+      "title": "Stylish, manual is bad",
+      "body": "Looks great. The included manual reads like it was Google-translated.",
+      "date": "2026-02-28",
+      "verified": true,
+      "variant": "White",
+      "author": "Riley T.",
+      "helpful": 3,
+      "reviewId": "RJ1K2L3M4N",
+      "vineVoice": false
+    }
+  ],
+  "meta": {
+    "asin": "B0FAKE1234",
+    "market": "US",
+    "total_available": 142,
+    "fetched": 3
+  }
+}
