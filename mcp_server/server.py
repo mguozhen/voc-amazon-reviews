@@ -3,7 +3,7 @@
 Run as:
     python -m mcp_server.server
 
-Or register with Claude Desktop / Claude Code via the snippets in this
+Or register with Claude Desktop / Claude Code via the snippets in the
 package's README.md. The server speaks the MCP protocol over stdio by
 default — no port to manage, no HTTP server to expose.
 
@@ -12,6 +12,8 @@ Tools registered:
     - analyze_reviews              — AI analysis on already-fetched reviews
     - voc_full                     — fetch + analyze in one call
     - extract_listing_improvements — VOC report → copyable title/bullets/desc
+    - analyze_csv                  — CSV/Excel input (any platform, not just Amazon)
+    - render_dashboard             — VOC report → standalone black-gold HTML
 """
 from __future__ import annotations
 
@@ -19,7 +21,7 @@ from mcp.server.fastmcp import FastMCP
 
 from . import tools
 
-mcp = FastMCP("voc-amazon-reviews")
+mcp = FastMCP("review-analyzer")
 
 
 @mcp.tool()
@@ -36,7 +38,6 @@ def fetch_reviews(asin: str, market: str = "US", limit: int = 100) -> dict:
         market: Market code (US, GB, DE, FR, IT, ES, JP, AU, CA, MX) or
             amazon.* domain ("amazon.co.uk"). Default: US.
         limit: Number of reviews to fetch (1-1000). Default: 100.
-            Larger limits cost more credits.
 
     Returns:
         {
@@ -51,9 +52,9 @@ def fetch_reviews(asin: str, market: str = "US", limit: int = 100) -> dict:
 def analyze_reviews(reviews_json: dict | list, asin: str) -> dict:
     """Run AI analysis on reviews you already have.
 
-    Useful when you fetched reviews via `fetch_reviews` (or your own
-    scraper) and want the VOC report — sentiment breakdown, pain points,
-    selling points, listing tips — without re-paying the Shulex API.
+    Useful when you fetched reviews via `fetch_reviews` (or your own scraper)
+    and want the VOC report — sentiment breakdown, pain points, selling
+    points, listing tips — without re-paying the Shulex API.
 
     Args:
         reviews_json: Either fetch.sh's `{reviews, meta}` envelope, or a
@@ -62,23 +63,17 @@ def analyze_reviews(reviews_json: dict | list, asin: str) -> dict:
             header).
 
     Returns:
-        {
-          "asin", "market", "report_markdown",
-          "sentiment": {positive, neutral, negative}    # percentages
-          "pain_points": [{zh, en, count}, ...],
-          "selling_points": [{zh, en, count}, ...],
-          "tips": [{zh, en}, ...],
-          "summary_zh", "summary_en"
-        }
+        {asin, market, report_markdown, sentiment, pain_points,
+         selling_points, tips, summary_zh, summary_en}
     """
     return tools.analyze_reviews(reviews_json=reviews_json, asin=asin)
 
 
 @mcp.tool()
 def voc_full(asin: str, market: str = "US", limit: int = 100) -> dict:
-    """One-shot: fetch reviews AND run AI analysis. The default tool for
-    "give me a VOC report on this ASIN" style requests.
+    """One-shot: fetch reviews AND run AI analysis.
 
+    The default tool for "give me a VOC report on this ASIN" style requests.
     Internally equivalent to `bash voc.sh ASIN` — calls fetch.sh and
     analyze.sh in sequence.
 
@@ -97,34 +92,71 @@ def extract_listing_improvements(asin: str, market: str = "US", limit: int = 100
     """Differentiator tool — derive specific, copyable listing improvements
     from the VOC report, grounded in actual customer language.
 
-    This is the value-add beyond Data Dive's keyword research: instead of
-    raw search-volume tables, Claude reads the full VOC report and produces
-    title, 5 bullets, a description paragraph, and missing keywords — each
-    suggestion citing the pain point it preempts or selling point it
-    amplifies.
+    Instead of raw search-volume tables (Data Dive style), Claude reads the
+    full VOC report and produces a title, 5 bullets, a description paragraph,
+    and missing keywords — each suggestion citing the pain point it preempts
+    or selling point it amplifies.
 
-    Requires the ANTHROPIC_API_KEY env var. Costs ~$0.05-0.20 per call
-    depending on report length (model: claude-opus-4-7).
-
-    Args:
-        asin: 10-character ASIN.
-        market: Market code or amazon.* domain (default: US).
-        limit: Reviews to analyze (default 100).
-
-    Returns:
-        {
-          "asin", "market",
-          "improvements": {
-              title_suggestion, title_reasoning,
-              bullet_suggestions: [{text, addresses}, ...],
-              description_paragraph,
-              keyword_opportunities: [...],
-              warnings: [...]    # signals that can't be fixed in copy
-          },
-          "source_report": {sentiment, pain_points, selling_points, summary_en}
-        }
+    Requires ANTHROPIC_API_KEY. Costs ~$0.05-0.20 per call (claude-opus-4-7).
     """
     return tools.extract_listing_improvements(asin=asin, market=market, limit=limit)
+
+
+@mcp.tool()
+def analyze_csv(
+    csv_path: str,
+    product_name: str | None = None,
+    market: str = "OTHER",
+) -> dict:
+    """Analyze any review CSV / Excel — not just Amazon.
+
+    Drag in a Helium 10 export, an eBay / AliExpress scrape, or your own
+    Shopify export. The loader fuzzy-matches column names (`内容` / `评价` /
+    `body` / `review` / `content` all detected automatically) so you don't
+    have to reformat the file.
+
+    Use this when:
+      - The product is NOT on Amazon (eBay / AliExpress / D2C)
+      - You already have a reviews file from another source
+      - You want to bypass the Shulex VOC API entirely
+
+    Args:
+        csv_path: Local path or HTTP(S) URL to a .csv / .xls / .xlsx file.
+        product_name: Optional friendly name for the report header.
+        market: Optional marketplace tag (US / GB / OTHER, etc.).
+
+    Returns: Same shape as `analyze_reviews`, with `meta.columns_detected`
+    showing which columns the loader matched.
+    """
+    return tools.analyze_csv(csv_path=csv_path, product_name=product_name, market=market)
+
+
+@mcp.tool()
+def render_dashboard(
+    report: dict,
+    improvements: dict | None = None,
+    product_name: str | None = None,
+    output_path: str | None = None,
+) -> dict:
+    """Render a VOC report as a standalone black-gold HTML dashboard.
+
+    The output is single-file HTML — no external dependencies, opens directly
+    in any browser. Includes sentiment bar, pain-point / selling-point
+    panels, executive summary, and (if `improvements` provided) a
+    copy-ready listing optimization card.
+
+    Args:
+        report: Output from `analyze_reviews` / `voc_full` / `analyze_csv`.
+        improvements: Optional output from `extract_listing_improvements`.
+        product_name: Friendly product name for the headline.
+        output_path: Optional file path to write the HTML to.
+
+    Returns: {html, bytes, output_path}
+    """
+    return tools.render_dashboard(
+        report=report, improvements=improvements,
+        product_name=product_name, output_path=output_path,
+    )
 
 
 def main() -> None:

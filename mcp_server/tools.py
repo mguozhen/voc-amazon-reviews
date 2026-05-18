@@ -313,3 +313,75 @@ def extract_listing_improvements(
             "summary_en": report["summary_en"],
         },
     }
+
+
+# ── tool 5: analyze_csv ──────────────────────────────────────────────────
+
+def analyze_csv(
+    csv_path: str,
+    *,
+    product_name: str | None = None,
+    market: str = "OTHER",
+) -> dict[str, Any]:
+    """Analyze a user-provided CSV / Excel of reviews. No Amazon scrape required.
+
+    Drag in any CSV (Helium 10 export, eBay / Shopify export, custom scrape).
+    The loader fuzzy-matches column names — `内容` / `评价` / `body` / `review`
+    are all detected automatically.
+
+    Use this when:
+        - The product is NOT on Amazon (eBay / AliExpress / D2C)
+        - You already scraped reviews and just want the VOC report
+        - You want to bypass the Shulex API entirely
+    """
+    from . import csv_loader
+
+    loaded = csv_loader.load_reviews(csv_path)
+    reviews = loaded["reviews"]
+    if not reviews:
+        raise ValueError(
+            "No reviews extracted from the file. Check the column names — "
+            f"detected: {loaded['meta']['columns_detected']}"
+        )
+
+    # Reuse analyze_reviews with a synthetic ASIN placeholder.
+    fake_asin = "B0CSV00000"  # not used as a real ASIN, just for the renderer
+    result = analyze_reviews(
+        reviews_json={"reviews": reviews, "meta": {"asin": fake_asin, "market": market}},
+        asin=fake_asin,
+    )
+    result["asin"] = product_name or "CSV input"
+    result["market"] = market
+    result["meta"] = loaded["meta"]
+    return result
+
+
+# ── tool 6: render_dashboard ─────────────────────────────────────────────
+
+def render_dashboard(
+    report: dict[str, Any],
+    *,
+    improvements: dict[str, Any] | None = None,
+    product_name: str | None = None,
+    output_path: str | None = None,
+) -> dict[str, Any]:
+    """Render a VOC report as a standalone black-gold HTML dashboard.
+
+    Writes the file (if `output_path` provided) and also returns the HTML
+    string so the caller can save it elsewhere or pipe it into a web preview.
+    """
+    from . import dashboard
+
+    html_str = dashboard.render_dashboard(
+        report, improvements=improvements, product_name=product_name
+    )
+    written_path = None
+    if output_path:
+        written_path = str(Path(output_path).expanduser().resolve())
+        Path(written_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(written_path).write_text(html_str, encoding="utf-8")
+    return {
+        "html": html_str,
+        "bytes": len(html_str.encode("utf-8")),
+        "output_path": written_path,
+    }

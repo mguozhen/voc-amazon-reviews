@@ -1,15 +1,15 @@
 ---
-name: voc-amazon-reviews
-description: "VOC AI — Amazon Review Intelligence. Input an ASIN, fetch real Amazon reviews via Shulex VOC API and run AI analysis. Outputs a structured bilingual report: sentiment breakdown, top pain points, key selling points, and Listing optimization suggestions. Triggers: voc, amazon review analysis, asin analysis, voice of customer, listing optimization, pain points, selling points, review insights, amazon fba, product research"
+name: review-analyzer
+description: "Review Analyzer — agent-callable e-commerce review intelligence. Input an ASIN or drag in a CSV; get sentiment + pain points + selling points + listing optimization + a black-gold HTML dashboard. Backed by Shulex VOC OpenAPI (10 markets) for Amazon ASINs, accepts any review CSV/Excel for other platforms. 6 MCP tools, agent-native. Triggers: review analysis, voc, amazon review, asin analysis, listing optimization, pain points, selling points, review insights, amazon fba, helium10 alternative, product research, review dashboard, csv review"
 allowed-tools: Bash
 metadata:
   openclaw:
     homepage: https://github.com/mguozhen/voc-amazon-reviews
 ---
 
-# VOC AI — Amazon Review Intelligence
+# Review Analyzer — Agent-Native Voice-of-Customer
 
-> Input an ASIN, fetch real Amazon reviews via Shulex VOC API, and get a structured bilingual insight report powered by AI.
+> Input an ASIN **or drag in a CSV**, get a structured bilingual VOC report + a black-gold HTML dashboard. 6 agent-callable MCP tools. Data layer backed by Shulex VOC OpenAPI for Amazon (10 markets); CSV mode works for any platform.
 
 ## Quick Setup (30 seconds)
 
