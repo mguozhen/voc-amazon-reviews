@@ -207,3 +207,5 @@ fetch.sh / analyze.sh / voc.sh   # shell pipeline behind tools 1-3
 MIT. See [LICENSE](LICENSE).
 
 **Acknowledgments**: Tag schema, CSV column detection, and dashboard visual design inspired by [buluslan/review-analyzer-skill](https://github.com/buluslan/review-analyzer-skill). Data layer powered by [Shulex VOC OpenAPI](https://apps.voc.ai/openapi).
+
+<!-- mcp-name: io.github.mguozhen/voc-amazon-reviews-mcp -->
