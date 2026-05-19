@@ -2,8 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.mguozhen/voc-amazon-reviews-mcp",
   "title": "VOC Amazon Reviews",
-  "description": "Agent-native Amazon review intelligence. Pulls reviews from 10 marketplaces via Shulex OpenAPI (not 
-scrapers), tagged with verified-purchase + Vine + helpful-vote signals. Produces copy-ready listing improvements.",
+  "description": "Agent-native Amazon review intelligence. Fetches reviews from 10 marketplaces via real Shulex OpenAPI (not scrapers), tagged with verified-purchase, Vine, and helpful-vote signals. Produces copy-ready listing improvements grounded in real customer language, backed by a 2B-review historical dataset.",
   "repository": {
     "url": "https://github.com/mguozhen/voc-amazon-reviews",
     "source": "github"
@@ -20,15 +19,14 @@ scrapers), tagged with verified-purchase + Vine + helpful-vote signals. Produces
       "environmentVariables": [
         {
           "name": "VOC_API_KEY",
-          "description": "Shulex VOC OpenAPI key. Free tier: 100 calls/month, no credit card. Get one at 
-https://apps.voc.ai/openapi",
+          "description": "Shulex VOC OpenAPI key. Get a free one (100 calls/month, no credit card) at https://apps.voc.ai/openapi",
           "isRequired": true,
           "format": "string",
           "isSecret": true
         },
         {
           "name": "ANTHROPIC_API_KEY",
-          "description": "Anthropic API key. Only needed for extract_listing_improvements.",
+          "description": "Anthropic API key. Only needed if you use extract_listing_improvements (which uses Claude Opus 4.7 for structured listing rewrites).",
           "isRequired": false,
           "format": "string",
           "isSecret": true
