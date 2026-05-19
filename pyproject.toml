@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "voc-amazon-reviews-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Amazon review intelligence MCP server, on Shulex VOC OpenAPI."
 readme = "README.md"
 requires-python = ">=3.10"
