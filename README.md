@@ -55,26 +55,37 @@ Two inputs, six tools, three outputs.
 
 ### Option A — As an MCP server (recommended)
 
-```bash
-# 1. Get a free Shulex VOC API key (starter credits free)
-#    https://apps.voc.ai/openapi
-export VOC_API_KEY="your-key"
-export ANTHROPIC_API_KEY="sk-ant-..."   # only needed for extract_listing_improvements
+Requires [`uv`](https://docs.astral.sh/uv/getting-started/installation/).
 
-# 2. Install
-git clone https://github.com/mguozhen/voc-amazon-reviews
-cd voc-amazon-reviews
-pip install -r mcp_server/requirements.txt
+Add this to your MCP client config (Claude Code, Claude Desktop, Cursor, Windsurf, VS Code Copilot, Cline, Continue.dev):
 
-# 3. Register with your agent (one line)
-claude mcp add review-analyzer -- python -m mcp_server.server
+```json
+{
+  "mcpServers": {
+    "voc-amazon-reviews": {
+      "command": "uvx",
+      "args": ["voc-amazon-reviews-mcp"],
+      "env": {
+        "VOC_API_KEY": "your-shulex-key",
+        "ANTHROPIC_API_KEY": "your-anthropic-key"
+      }
+    }
+  }
+}
 ```
 
-Now ask any Claude Code / Cursor / Cline session:
+Get a free Shulex API key (100 calls/month, no credit card): [apps.voc.ai/openapi](https://apps.voc.ai/openapi).
+
+First run resolves dependencies in ~5s; subsequent runs are instant.
+
+#### Try it
+
+Ask any MCP-compatible agent:
 
 > Run a VOC report on `B08N5WRWNW`, render the dashboard, and write it to `~/Desktop/voc.html`.
 
 The agent will call `voc_full` → `render_dashboard` and hand you the file.
+
 
 ### Option B — One-shot CLI
 
