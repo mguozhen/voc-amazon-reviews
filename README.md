@@ -125,6 +125,28 @@ To run the HTTP transport locally (e.g. for testing):
 MCP_TRANSPORT=streamable-http PORT=8080 python -m mcp_server.server
 ```
 
+### Option E — Deploy to Vercel (serverless)
+
+This repo also ships `vercel.json` + `api/index.py` for one-click Vercel
+deploys. Sign in at [vercel.com](https://vercel.com) with GitHub, import the
+repo, and Vercel auto-detects the Python function.
+
+Set these in **Project Settings → Environment Variables** before the first
+deploy:
+
+| Variable | Required | Notes |
+|---|---|---|
+| `VOC_API_KEY` | yes | Shulex VOC OpenAPI key |
+| `ANTHROPIC_API_KEY` | optional | Only for `extract_listing_improvements` |
+
+**Timeout caveat:** Vercel functions cap at 10s (Hobby default), 60s
+(Hobby with `maxDuration: 60` — already set in `vercel.json`), or 300s
+(Pro). Long-running tools like `voc_full` (30-90s) and
+`extract_listing_improvements` (20-60s) may exceed these limits. For
+unbounded execution, prefer Option D (Docker/Render/Fly) or local install.
+
+The MCP endpoint after deploy: `https://your-project.vercel.app/mcp`
+
 ---
 
 ## Tools
@@ -223,6 +245,7 @@ fetch.sh / analyze.sh / voc.sh   # shell pipeline behind tools 1-3
 - [ ] CLI subprocess engine option (use your Claude subscription, $0 API)
 - [ ] PyPI publish + official MCP Registry submission
 - [x] Smithery deploy config (`smithery.yaml` + `Dockerfile`)
+- [x] Vercel deploy config (`vercel.json` + `api/index.py`)
 - [ ] Smithery / mcp.so / PulseMCP form submissions
 
 ---
