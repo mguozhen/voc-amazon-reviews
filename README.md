@@ -128,7 +128,7 @@ MCP_TRANSPORT=streamable-http PORT=8080 python -m mcp_server.server
 
 ### Option E — Deploy to Vercel (serverless)
 
-This repo also ships `vercel.json` + `api/index.py` for one-click Vercel
+This repo also ships `vercel.json` + `app.py` for one-click Vercel
 deploys. Sign in at [vercel.com](https://vercel.com) with GitHub, import the
 repo, and Vercel auto-detects the Python function.
 
@@ -246,7 +246,7 @@ fetch.sh / analyze.sh / voc.sh   # shell pipeline behind tools 1-3
 - [ ] CLI subprocess engine option (use your Claude subscription, $0 API)
 - [ ] PyPI publish + official MCP Registry submission
 - [x] Smithery deploy config (`smithery.yaml` + `Dockerfile`)
-- [x] Vercel deploy config (`vercel.json` + `api/index.py`)
+- [x] Vercel deploy config (`vercel.json` + `app.py`)
 - [ ] Smithery / mcp.so / PulseMCP form submissions
 
 ---
