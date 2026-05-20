@@ -7,6 +7,10 @@ Or register with Claude Desktop / Claude Code via the snippets in the
 package's README.md. The server speaks the MCP protocol over stdio by
 default — no port to manage, no HTTP server to expose.
 
+Set MCP_TRANSPORT=streamable-http (and optionally PORT / MCP_HOST) to
+run as an HTTP server instead — used by Smithery and other remote
+hosts.
+
 Tools registered:
     - fetch_reviews                — scrape Amazon reviews for one ASIN
     - analyze_reviews              — AI analysis on already-fetched reviews
@@ -17,11 +21,17 @@ Tools registered:
 """
 from __future__ import annotations
 
+import os
+
 from mcp.server.fastmcp import FastMCP
 
 from . import tools
 
-mcp = FastMCP("review-analyzer")
+mcp = FastMCP(
+    "review-analyzer",
+    host=os.environ.get("MCP_HOST", "0.0.0.0"),
+    port=int(os.environ.get("PORT", "8080")),
+)
 
 
 @mcp.tool()
@@ -160,8 +170,10 @@ def render_dashboard(
 
 
 def main() -> None:
-    """Run the stdio-transport MCP server."""
-    mcp.run()
+    """Run the MCP server. Transport defaults to stdio; set
+    MCP_TRANSPORT=streamable-http (or sse) for remote/HTTP deployment."""
+    transport = os.environ.get("MCP_TRANSPORT", "stdio")
+    mcp.run(transport=transport)
 
 
 if __name__ == "__main__":

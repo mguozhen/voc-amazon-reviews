@@ -102,6 +102,29 @@ python -c "from mcp_server.tools import analyze_csv, render_dashboard; \
   render_dashboard(r, output_path='dashboard.html')"
 ```
 
+### Option D — Hosted on Smithery (no install)
+
+Connect to the server remotely — no `uvx`, no Python, no local install. Bring
+your own Shulex API key (Smithery prompts for it on first connection).
+
+This repo ships a `Dockerfile` and `smithery.yaml` for one-click deploy.
+To run your own hosted instance:
+
+1. Fork or clone this repo to your GitHub.
+2. Sign in at [smithery.ai](https://smithery.ai) with GitHub.
+3. **Deploy a server** → pick the repo. Smithery builds the container and
+   exposes an HTTPS MCP endpoint.
+4. Share the URL with users; they paste it into Claude / Cursor / Cline.
+
+The same image runs anywhere that takes a Dockerfile — Fly.io, Railway,
+Cloudflare Workers (with adapter), Render, Cloud Run.
+
+To run the HTTP transport locally (e.g. for testing):
+
+```bash
+MCP_TRANSPORT=streamable-http PORT=8080 python -m mcp_server.server
+```
+
 ---
 
 ## Tools
@@ -185,6 +208,7 @@ fetch.sh / analyze.sh / voc.sh   # shell pipeline behind tools 1-3
 | [Glama](https://glama.ai/mcp/servers) | 🟢 Auto-indexed via GitHub topics |
 | [mcp.directory](https://mcp.directory) | 🟢 Auto-pull |
 | mcp.so / PulseMCP | 🟡 Pending (manual form submit) |
+| Smithery | 🟡 Container deploy ready (`smithery.yaml` + `Dockerfile` in repo) |
 | Official MCP Registry | 🟡 Pending PyPI publish (W2) |
 
 ---
@@ -198,6 +222,7 @@ fetch.sh / analyze.sh / voc.sh   # shell pipeline behind tools 1-3
 - [ ] `npx skills add mguozhen/review-analyzer` one-line install
 - [ ] CLI subprocess engine option (use your Claude subscription, $0 API)
 - [ ] PyPI publish + official MCP Registry submission
+- [x] Smithery deploy config (`smithery.yaml` + `Dockerfile`)
 - [ ] Smithery / mcp.so / PulseMCP form submissions
 
 ---

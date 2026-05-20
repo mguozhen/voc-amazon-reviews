@@ -1,0 +1,20 @@
+runtime: container
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    required:
+      - vocApiKey
+    properties:
+      vocApiKey:
+        type: string
+        title: Shulex VOC API key
+        description: >-
+          Shulex VOC OpenAPI key. Get a free one (100 calls/month, no credit card)
+          at https://apps.voc.ai/openapi
+      anthropicApiKey:
+        type: string
+        title: Anthropic API key (optional)
+        description: >-
+          Only needed for extract_listing_improvements, which uses
+          claude-opus-4-7 for structured listing rewrites.
