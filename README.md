@@ -66,8 +66,7 @@ Add this to your MCP client config (Claude Code, Claude Desktop, Cursor, Windsur
       "command": "uvx",
       "args": ["voc-amazon-reviews-mcp"],
       "env": {
-        "VOC_API_KEY": "your-shulex-key",
-        "ANTHROPIC_API_KEY": "your-anthropic-key"
+        "VOC_API_KEY": "your-shulex-key"
       }
     }
   }
@@ -75,6 +74,8 @@ Add this to your MCP client config (Claude Code, Claude Desktop, Cursor, Windsur
 ```
 
 Get a free Shulex API key (100 calls/month, no credit card): [apps.voc.ai/openapi](https://apps.voc.ai/openapi).
+
+**Optional:** Add `"ANTHROPIC_API_KEY": "sk-ant-..."` to enable `extract_listing_improvements` (the only tool that calls Claude directly — others work without it). Must be an actual Anthropic key; other providers won't work.
 
 First run resolves dependencies in ~5s; subsequent runs are instant.
 
