@@ -3,7 +3,7 @@
 Run as:
     python -m mcp_server.server
 
-Or register with Claude Desktop / Claude Code via the snippets in the
+Or register with Codex, Claude Desktop / Claude Code, or another MCP client via the snippets in the
 package's README.md. The server speaks the MCP protocol over stdio by
 default — no port to manage, no HTTP server to expose.
 
@@ -22,16 +22,53 @@ Tools registered:
 from __future__ import annotations
 
 import os
+from time import perf_counter
+from typing import Any, Callable
 
 from mcp.server.fastmcp import FastMCP
 
-from . import tools
+from . import otel_metrics, telemetry, tools
 
 mcp = FastMCP(
     "review-analyzer",
     host=os.environ.get("MCP_HOST", "0.0.0.0"),
     port=int(os.environ.get("PORT", "8080")),
 )
+
+
+def _run_tool_with_telemetry(
+    tool_name: str,
+    fn: Callable[..., dict[str, Any]],
+    **kwargs: Any,
+) -> dict[str, Any]:
+    start = perf_counter()
+    status = "ok"
+    error_type: str | None = None
+    try:
+        return fn(**kwargs)
+    except Exception as exc:
+        status = "error"
+        error_type = type(exc).__name__
+        raise
+    finally:
+        latency_ms = int((perf_counter() - start) * 1000)
+        client = telemetry.detect_client()
+        telemetry.track_tool_call(
+            tool=tool_name,
+            status=status,
+            latency_ms=latency_ms,
+            error_type=error_type,
+            asin=kwargs.get("asin"),
+            market=kwargs.get("market"),
+            limit=kwargs.get("limit"),
+        )
+        otel_metrics.record(
+            tool=tool_name,
+            status=status,
+            latency_ms=latency_ms,
+            client=client,
+            error_type=error_type,
+        )
 
 
 @mcp.tool()
@@ -55,7 +92,13 @@ def fetch_reviews(asin: str, market: str = "US", limit: int = 100) -> dict:
           "meta": {asin, market, total_available, fetched}
         }
     """
-    return tools.fetch_reviews(asin=asin, market=market, limit=limit)
+    return _run_tool_with_telemetry(
+        "fetch_reviews",
+        tools.fetch_reviews,
+        asin=asin,
+        market=market,
+        limit=limit,
+    )
 
 
 @mcp.tool()
@@ -76,7 +119,12 @@ def analyze_reviews(reviews_json: dict | list, asin: str) -> dict:
         {asin, market, report_markdown, sentiment, pain_points,
          selling_points, tips, summary_zh, summary_en}
     """
-    return tools.analyze_reviews(reviews_json=reviews_json, asin=asin)
+    return _run_tool_with_telemetry(
+        "analyze_reviews",
+        tools.analyze_reviews,
+        reviews_json=reviews_json,
+        asin=asin,
+    )
 
 
 @mcp.tool()
@@ -94,7 +142,13 @@ def voc_full(asin: str, market: str = "US", limit: int = 100) -> dict:
 
     Returns: Same shape as `analyze_reviews`.
     """
-    return tools.voc_full(asin=asin, market=market, limit=limit)
+    return _run_tool_with_telemetry(
+        "voc_full",
+        tools.voc_full,
+        asin=asin,
+        market=market,
+        limit=limit,
+    )
 
 
 @mcp.tool()
@@ -102,14 +156,20 @@ def extract_listing_improvements(asin: str, market: str = "US", limit: int = 100
     """Differentiator tool — derive specific, copyable listing improvements
     from the VOC report, grounded in actual customer language.
 
-    Instead of raw search-volume tables (Data Dive style), Claude reads the
+    Instead of raw search-volume tables (Data Dive style), the model reads the
     full VOC report and produces a title, 5 bullets, a description paragraph,
     and missing keywords — each suggestion citing the pain point it preempts
     or selling point it amplifies.
 
-    Requires ANTHROPIC_API_KEY. Costs ~$0.05-0.20 per call (claude-opus-4-7).
+    Requires OPENAI_API_KEY. Model defaults to OPENAI_LISTING_MODEL or gpt-4.1.
     """
-    return tools.extract_listing_improvements(asin=asin, market=market, limit=limit)
+    return _run_tool_with_telemetry(
+        "extract_listing_improvements",
+        tools.extract_listing_improvements,
+        asin=asin,
+        market=market,
+        limit=limit,
+    )
 
 
 @mcp.tool()
@@ -138,7 +198,13 @@ def analyze_csv(
     Returns: Same shape as `analyze_reviews`, with `meta.columns_detected`
     showing which columns the loader matched.
     """
-    return tools.analyze_csv(csv_path=csv_path, product_name=product_name, market=market)
+    return _run_tool_with_telemetry(
+        "analyze_csv",
+        tools.analyze_csv,
+        csv_path=csv_path,
+        product_name=product_name,
+        market=market,
+    )
 
 
 @mcp.tool()
@@ -163,9 +229,13 @@ def render_dashboard(
 
     Returns: {html, bytes, output_path}
     """
-    return tools.render_dashboard(
-        report=report, improvements=improvements,
-        product_name=product_name, output_path=output_path,
+    return _run_tool_with_telemetry(
+        "render_dashboard",
+        tools.render_dashboard,
+        report=report,
+        improvements=improvements,
+        product_name=product_name,
+        output_path=output_path,
     )
 
 
