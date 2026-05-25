@@ -60,6 +60,51 @@ Metric attributes:
 - `client`
 - `error_type`
 
+## Deployment checklist (production)
+
+1. Copy env template:
+
+```bash
+cp deploy/telemetry.env.example .env.telemetry
+```
+
+2. Set required values:
+
+- `TELEMETRY_HASH_SALT`
+- `REDIS_URL`
+- (optional) `MCP_CLIENT`
+
+3. Enable OTel export (optional):
+
+- `OTEL_ENABLED=1`
+- `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=...`
+
+4. Restart your MCP server deployment.
+
+## Verification scripts
+
+- Healthcheck:
+
+```bash
+./scripts/telemetry_healthcheck.sh
+```
+
+- Daily KPI report (Redis required):
+
+```bash
+REDIS_URL=redis://localhost:6379/0 ./scripts/telemetry_daily_report.sh
+```
+
+- Alerts (non-zero exit on threshold breach):
+
+```bash
+REDIS_URL=redis://localhost:6379/0 \
+MIN_CALLS=10 \
+MAX_ERROR_RATE_PCT=20 \
+MAX_P95_MS=15000 \
+./scripts/telemetry_alerts.sh
+```
+
 ## Quick checks
 
 Daily call count:
