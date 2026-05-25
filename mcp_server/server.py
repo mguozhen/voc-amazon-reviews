@@ -44,8 +44,10 @@ def _run_tool_with_telemetry(
     start = perf_counter()
     status = "ok"
     error_type: str | None = None
+    result: dict[str, Any] | None = None
     try:
-        return fn(**kwargs)
+        result = fn(**kwargs)
+        return result
     except Exception as exc:
         status = "error"
         error_type = type(exc).__name__
@@ -53,6 +55,8 @@ def _run_tool_with_telemetry(
     finally:
         latency_ms = int((perf_counter() - start) * 1000)
         client = telemetry.detect_client()
+        business_success = _infer_business_success(tool_name, status, result)
+        cost_usd = _infer_cost_usd(result)
         telemetry.track_tool_call(
             tool=tool_name,
             status=status,
@@ -61,6 +65,8 @@ def _run_tool_with_telemetry(
             asin=kwargs.get("asin"),
             market=kwargs.get("market"),
             limit=kwargs.get("limit"),
+            business_success=business_success,
+            cost_usd=cost_usd,
         )
         otel_metrics.record(
             tool=tool_name,
@@ -69,6 +75,40 @@ def _run_tool_with_telemetry(
             client=client,
             error_type=error_type,
         )
+
+
+def _infer_cost_usd(result: dict[str, Any] | None) -> float | None:
+    if not isinstance(result, dict):
+        return None
+    meta = result.get("_meta")
+    if isinstance(meta, dict):
+        raw = meta.get("cost_usd")
+        if raw is not None:
+            try:
+                return float(raw)
+            except Exception:
+                return None
+    return None
+
+
+def _infer_business_success(
+    tool_name: str,
+    status: str,
+    result: dict[str, Any] | None,
+) -> bool:
+    if status != "ok" or not isinstance(result, dict):
+        return False
+    if tool_name == "fetch_reviews":
+        return isinstance(result.get("reviews"), list) and len(result.get("reviews", [])) > 0
+    if tool_name in {"analyze_reviews", "voc_full"}:
+        return bool(result.get("report_markdown")) and result.get("sentiment") is not None
+    if tool_name == "extract_listing_improvements":
+        return bool(result.get("improvements"))
+    if tool_name == "analyze_csv":
+        return bool(result.get("report_markdown")) and "meta" in result
+    if tool_name == "render_dashboard":
+        return bool(result.get("html")) and int(result.get("bytes", 0)) > 0
+    return True
 
 
 @mcp.tool()

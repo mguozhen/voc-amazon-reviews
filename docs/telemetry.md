@@ -6,6 +6,8 @@ This server emits one telemetry event per MCP tool call.
 
 - `ts`, `day`, `server`, `host`
 - `tool`, `client`, `status`, `latency_ms`, `error_type`
+- `client_instance_id`, `session_id`, `source_catalog`
+- `business_success`, `cost_usd`
 - `market`, `limit`
 - `asin_hash` (hashed, never raw ASIN)
 
@@ -15,6 +17,9 @@ No review text, API keys, or raw customer payloads are stored.
 
 - `TELEMETRY_ENABLED` (default: `1`)
 - `MCP_CLIENT` (optional override, e.g. `cursor`, `claude_code`)
+- `MCP_CLIENT_INSTANCE_ID` (recommended for D1/D7/D30 retention)
+- `MCP_SESSION_ID` (optional session grouping)
+- `MCP_SOURCE_CATALOG` (e.g. `mcp_so`, `glama`, `smithery`, `registry`)
 - `TELEMETRY_SERVER_NAME` (default: `voc-amazon-reviews`)
 - `TELEMETRY_LOG_PATH` (default: `./logs/telemetry.jsonl`)
 - `TELEMETRY_HASH_SALT` (recommended in production)
@@ -27,6 +32,10 @@ No review text, API keys, or raw customer payloads are stored.
    - `LPUSH mcp:voc:latency:{day}:{client}:{tool} {latency_ms}`
    - `LTRIM mcp:voc:latency:{day}:{client}:{tool} 0 1999`
    - `INCR mcp:voc:errors:{day}:{tool}:{error_type}` (errors only)
+   - `INCR mcp:voc:business_success:{day}:{tool}:{true|false}`
+   - `INCRBYFLOAT mcp:voc:cost_usd:{day}:{tool} {cost}`
+   - `SADD mcp:voc:active:{day} {client_instance_id}` (retention base set)
+   - `INCR mcp:voc:install:{day}:{source_catalog}` (if install events sent)
    - `XADD mcp:voc:events ... MAXLEN ~ 20000`
 2. Otherwise write JSONL to `TELEMETRY_LOG_PATH`.
 
@@ -103,6 +112,18 @@ MIN_CALLS=10 \
 MAX_ERROR_RATE_PCT=20 \
 MAX_P95_MS=15000 \
 ./scripts/telemetry_alerts.sh
+```
+
+- Funnel snapshot (install -> first call -> ok calls):
+
+```bash
+REDIS_URL=redis://localhost:6379/0 ./scripts/telemetry_funnel.sh
+```
+
+- Cohort retention snapshot (D1/D7/D30):
+
+```bash
+REDIS_URL=redis://localhost:6379/0 ./scripts/telemetry_retention.sh 2026-05-25
 ```
 
 ## Quick checks
