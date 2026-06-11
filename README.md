@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mguozhen-voc-amazon-reviews-badge.png)](https://mseep.ai/app/mguozhen-voc-amazon-reviews)
+
 <p align="center">
   <img src="docs/logo-400.png" width="120" alt="Review Analyzer">
 </p>
