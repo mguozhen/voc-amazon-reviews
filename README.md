@@ -163,6 +163,8 @@ The MCP endpoint after deploy: `https://your-project.vercel.app/mcp`
 
 All 6 tools speak MCP. All return JSON-serializable dicts. Full schemas in [`mcp_server/README.md`](mcp_server/README.md).
 
+For a product-manager workflow that turns VOC output into product definition hypotheses, see [`docs/voc-to-product-definition.md`](docs/voc-to-product-definition.md).
+
 ---
 
 ## Data layer — why this is the moat
